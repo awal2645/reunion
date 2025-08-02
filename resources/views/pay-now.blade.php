@@ -64,7 +64,7 @@
                                 </div>
                                 <div>
                                     <div class="text-sm text-gray-600 mb-1">Account Name</div>
-                                    <div class="font-semibold text-gray-900">Statisticsk Alumni Reunion</div>
+                                    <div class="font-semibold text-gray-900">Statistics Alumni Reunion</div>
                                 </div>
                                 <div>
                                     <div class="text-sm text-gray-600 mb-1">Account Number</div>

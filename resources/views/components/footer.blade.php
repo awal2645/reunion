@@ -34,7 +34,7 @@
                 <ul class="space-y-3 text-blue-700 text-sm">
                     <li class="flex items-center gap-3">
                         <i class="fas fa-envelope text-blue-500"></i>
-                        <span>reunion@Statisticsk.com</span>
+                        <span>reunion@Statistics.com</span>
                     </li>
                     <li class="flex items-center gap-3">
                         <i class="fas fa-phone text-blue-500"></i>
@@ -50,7 +50,7 @@
 
         <!-- Footer Bottom -->
         <div class="border-t border-blue-300/40 mt-12 pt-6 text-sm text-blue-600 text-center">
-            © 2025 Statisticsk Department Reunion. Made with <i class="fas fa-heart text-red-400 mx-1"></i> for our
+            © 2025 Statistics Department Reunion. Made with <i class="fas fa-heart text-red-400 mx-1"></i> for our
             incredible team.
         </div>
     </div>

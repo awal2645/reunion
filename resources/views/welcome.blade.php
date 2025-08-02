@@ -76,7 +76,7 @@
                 <h2 class="text-4xl md:text-5xl font-bold text-blue-900 mb-6">About Our Reunion</h2>
                 <p class="text-xl text-black max-w-3xl mx-auto leading-relaxed">
                     Join us for an unforgettable evening celebrating the bonds we've built and the memories we've
-                    created together at Statisticsk Department.
+                    created together at Statistics Department.
                 </p>
             </div>
 
@@ -288,7 +288,7 @@
             <!-- Section Header -->
             <div class="text-center mb-16">
                 <h2 class="text-4xl md:text-5xl font-bold text-blue-900 mb-4">Memory Lane</h2>
-                <p class="text-xl text-blue-700">Relive the moments that made our time at Statisticsk special</p>
+                <p class="text-xl text-blue-700">Relive the moments that made our time at Statistics special</p>
             </div>
 
             <!-- Image Grid -->

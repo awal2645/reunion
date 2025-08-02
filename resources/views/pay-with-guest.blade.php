@@ -134,7 +134,7 @@
                                 </div>
                                 <div class="sm:col-span-2">
                                     <div class="text-xs sm:text-sm text-gray-600 mb-1">Account Name</div>
-                                    <div class="font-semibold text-gray-900 text-sm sm:text-base">Statisticsk Alumni Reunion</div>
+                                    <div class="font-semibold text-gray-900 text-sm sm:text-base">Statistics Alumni Reunion</div>
                                 </div>
                                 <div class="sm:col-span-2">
                                     <div class="text-xs sm:text-sm text-gray-600 mb-1">Account Number</div>
