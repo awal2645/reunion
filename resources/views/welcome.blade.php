@@ -20,10 +20,12 @@
                     <span class="fade-letter" style="animation-delay: 0.1s;">T</span>
                     <span class="fade-letter" style="animation-delay: 0.2s;">A</span>
                     <span class="fade-letter" style="animation-delay: 0.3s;">T</span>
-                    <span class="fade-letter" style="animation-delay: 0.4s;">S</span>
-                    <span class="fade-letter" style="animation-delay: 0.5s;">T</span>
-                    <span class="fade-letter" style="animation-delay: 0.6s;">I</span>
-                    <span class="fade-letter" style="animation-delay: 0.7s;">C</span>
+                    <span class="fade-letter" style="animation-delay: 0.3s;">I</span>
+                    <span class="fade-letter" style="animation-delay: 0.5s;">S</span>
+                    <span class="fade-letter" style="animation-delay: 0.6s;">T</span>
+                    <span class="fade-letter" style="animation-delay: 0.7s;">I</span>
+                    <span class="fade-letter" style="animation-delay: 0.8s;">C</span>
+                    <span class="fade-letter" style="animation-delay: 0.9s;">S</span>
                     <span>&nbsp;</span>
                     <span class="fade-letter" style="animation-delay: 0.8s;">D</span>
                     <span class="fade-letter" style="animation-delay: 0.9s;">E</span>
@@ -74,7 +76,7 @@
                 <h2 class="text-4xl md:text-5xl font-bold text-blue-900 mb-6">About Our Reunion</h2>
                 <p class="text-xl text-black max-w-3xl mx-auto leading-relaxed">
                     Join us for an unforgettable evening celebrating the bonds we've built and the memories we've
-                    created together at StatStick Department.
+                    created together at Statisticsk Department.
                 </p>
             </div>
 
@@ -286,7 +288,7 @@
             <!-- Section Header -->
             <div class="text-center mb-16">
                 <h2 class="text-4xl md:text-5xl font-bold text-blue-900 mb-4">Memory Lane</h2>
-                <p class="text-xl text-blue-700">Relive the moments that made our time at StatStick special</p>
+                <p class="text-xl text-blue-700">Relive the moments that made our time at Statisticsk special</p>
             </div>
 
             <!-- Image Grid -->
