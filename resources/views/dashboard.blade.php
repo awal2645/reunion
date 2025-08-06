@@ -186,7 +186,7 @@
                         <h2 class="text-2xl font-bold text-white mb-2 flex items-center gap-3">
                             <i class="fas fa-file-invoice-dollar"></i>
                             Payment Invoice
-                        </h2>
+        </h2>
                         <p class="text-green-100">Invoice #{{ $order->id }}</p>
                     </div>
                     
@@ -287,5 +287,5 @@
             @endif
         </div>
     </main>
-</div>
+    </div>
 @endsection

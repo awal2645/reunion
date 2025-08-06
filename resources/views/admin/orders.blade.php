@@ -187,21 +187,26 @@
                                     @endif
                                 </td>
                                 <td class="px-6 py-4">
-                                    @if($order->status === 'pending')
-                                        <form method="POST" action="{{ route('admin.orders.updateStatus', $order->id) }}" class="inline">
-                                            @csrf
-                                            <input type="hidden" name="status" value="paid">
-                                            <button type="submit" class="inline-flex items-center gap-2 bg-gradient-to-r from-green-600 to-green-700 text-white px-4 py-2 rounded-lg font-bold shadow hover:shadow-lg transition-all duration-300 transform hover:scale-105">
+                                    <div class="flex items-center gap-2">
+                                        @if($order->status === 'pending')
+                                            <button onclick="confirmMarkAsPaid({{ $order->id }}, '{{ $order->full_name }}', '{{ $order->trxid }}', '{{ number_format($order->amount) }}')" 
+                                                    class="inline-flex items-center gap-2 bg-gradient-to-r from-green-600 to-green-700 text-white px-4 py-2 rounded-lg font-bold shadow hover:shadow-lg transition-all duration-300 transform hover:scale-105">
                                                 <i class="fas fa-check"></i>
-                                                Mark as Paid
                                             </button>
-                                        </form>
-                                    @else
-                                        <span class="inline-flex items-center gap-2 text-green-700 font-semibold">
-                                            <i class="fas fa-check-circle text-lg"></i>
-                                            Confirmed
-                                        </span>
-                                    @endif
+                                        @else
+                                            <span class="inline-flex items-center gap-2 text-green-700 font-semibold">
+                                                <i class="fas fa-check-circle text-lg"></i>
+                                                Confirmed
+                                            </span>
+                                        @endif
+                                        
+                                        <!-- Delete Button -->
+                                        <button onclick="confirmDelete({{ $order->id }}, '{{ $order->full_name }}')" 
+                                                class="inline-flex items-center gap-2 bg-gradient-to-r from-red-600 to-red-700 text-white px-4 py-2 rounded-lg font-bold shadow hover:shadow-lg transition-all duration-300 transform hover:scale-105">
+                                            <i class="fas fa-trash"></i>
+                                            
+                                        </button>
+                                    </div>
                                 </td>
                             </tr>
                             @empty
@@ -236,4 +241,110 @@
         </div>
     </main>
 </div>
+
+<script>
+function confirmMarkAsPaid(orderId, customerName, trxid, amount) {
+    Swal.fire({
+        title: 'Confirm Payment?',
+        html: `
+            <div class="text-left">
+                <p class="mb-3">Are you sure you want to mark this order as paid?</p>
+                <div class="bg-green-50 border border-green-200 rounded-lg p-3 mb-3">
+                    <div class="space-y-2">
+                        <div class="flex items-center gap-2 text-green-800">
+                            <i class="fas fa-user"></i>
+                            <span class="font-semibold">Customer:</span> ${customerName}
+                        </div>
+                        <div class="flex items-center gap-2 text-green-800">
+                            <i class="fas fa-receipt"></i>
+                            <span class="font-semibold">TRXID:</span> ${trxid}
+                        </div>
+                        <div class="flex items-center gap-2 text-green-800">
+                            <i class="fas fa-money-bill-wave"></i>
+                            <span class="font-semibold">Amount:</span> ৳${amount}
+                        </div>
+                    </div>
+                </div>
+                <p class="text-sm text-gray-600">This will confirm the payment and update the order status.</p>
+            </div>
+        `,
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#059669',
+        cancelButtonColor: '#6b7280',
+        confirmButtonText: 'Yes, Mark as Paid',
+        cancelButtonText: 'Cancel',
+        reverseButtons: true
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Create and submit the form
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = `/admin/orders/${orderId}/status`;
+            
+            const csrfToken = document.createElement('input');
+            csrfToken.type = 'hidden';
+            csrfToken.name = '_token';
+            csrfToken.value = '{{ csrf_token() }}';
+            
+            const statusField = document.createElement('input');
+            statusField.type = 'hidden';
+            statusField.name = 'status';
+            statusField.value = 'paid';
+            
+            form.appendChild(csrfToken);
+            form.appendChild(statusField);
+            document.body.appendChild(form);
+            form.submit();
+        }
+    });
+}
+
+function confirmDelete(orderId, customerName) {
+    Swal.fire({
+        title: 'Remove Order?',
+        html: `
+            <div class="text-left">
+                <p class="mb-3">Are you sure you want to remove this order?</p>
+                <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-3 mb-3">
+                    <div class="flex items-center gap-2 text-yellow-800">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <span class="font-semibold">Customer:</span> ${customerName}
+                    </div>
+                </div>
+                <p class="text-sm text-gray-600">This will allow the user to submit a new transaction with the correct TRXID.</p>
+            </div>
+        `,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#dc2626',
+        cancelButtonColor: '#6b7280',
+        confirmButtonText: 'Yes, Remove Order',
+        cancelButtonText: 'Cancel',
+        reverseButtons: true
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Create and submit the delete form
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = `/admin/orders/${orderId}`;
+            
+            const csrfToken = document.createElement('input');
+            csrfToken.type = 'hidden';
+            csrfToken.name = '_token';
+            csrfToken.value = '{{ csrf_token() }}';
+            
+            const methodField = document.createElement('input');
+            methodField.type = 'hidden';
+            methodField.name = '_method';
+            methodField.value = 'DELETE';
+            
+            form.appendChild(csrfToken);
+            form.appendChild(methodField);
+            document.body.appendChild(form);
+            form.submit();
+        }
+    });
+}
+</script>
 @endsection

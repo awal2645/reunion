@@ -15,7 +15,7 @@
         <!-- Registration Form -->
         <div class="bg-white rounded-3xl shadow-2xl border border-gray-100 overflow-hidden">
             <form method="POST" action="{{ route('register') }}" enctype="multipart/form-data" class="p-8">
-                @csrf
+        @csrf
 
                 <!-- Basic Information -->
                 <div class="mb-8">
@@ -109,7 +109,7 @@
                             <x-input-error :messages="$errors->get('contact_number')" class="mt-2" />
                         </div>
 
-                        <div>
+        <div>
                             <label for="whatsapp_number" class="block text-sm font-semibold text-gray-700 mb-2">
                                 <i class="fab fa-whatsapp text-green-500 mr-2"></i>WhatsApp Number
                             </label>
@@ -123,7 +123,7 @@
                                     placeholder="1XXXXXXXXX" maxlength="11" />
                             </div>
                             <x-input-error :messages="$errors->get('whatsapp_number')" class="mt-2" />
-                        </div>
+        </div>
 
                         <!-- Email -->
                         <div class="lg:col-span-2">
@@ -134,8 +134,8 @@
                                 class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:ring-blue-500 transition-all duration-300" 
                                 value="{{ old('email') }}" required 
                                 placeholder="your.email@example.com" />
-                            <x-input-error :messages="$errors->get('email')" class="mt-2" />
-                        </div>
+            <x-input-error :messages="$errors->get('email')" class="mt-2" />
+        </div>
 
                         <!-- Facebook Profile -->
                         <div class="lg:col-span-2">
@@ -375,8 +375,8 @@
                                     <i class="fas fa-eye" id="password-eye"></i>
                                 </button>
                             </div>
-                            <x-input-error :messages="$errors->get('password')" class="mt-2" />
-                        </div>
+            <x-input-error :messages="$errors->get('password')" class="mt-2" />
+        </div>
 
                         <div>
                             <label for="password_confirmation" class="block text-sm font-semibold text-gray-700 mb-2">
@@ -392,7 +392,7 @@
                                     <i class="fas fa-eye" id="password_confirmation-eye"></i>
                                 </button>
                             </div>
-                            <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
+            <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
                         </div>
                     </div>
                 </div>

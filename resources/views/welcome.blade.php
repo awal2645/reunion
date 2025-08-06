@@ -5,43 +5,71 @@
     <section id="home" class="relative min-h-screen flex items-center justify-center overflow-hidden">
         <!-- Background Image with Gradient Overlay -->
         <div class="absolute inset-0 z-0">
-            <img src="https://rc.gov.bd/wp-content/uploads/2024/04/Photo-11.jpg" alt="Rajshahi College Collage"
+            <img src="{{ asset('images/bg.jpeg') }}" alt="Rajshahi College Collage"
                 class="w-full h-full object-cover object-center brightness-90" />
             <div class="absolute inset-0 bg-gradient-to-b from-blue-900/40 via-blue-800/30 to-blue-700/40"></div>
         </div>
 
+        <!-- Three Logo Header -->
+        <div class="absolute top-8 left-0 right-0 z-20">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex items-center justify-between">
+                    <!-- Rajshahi College Logo (Left) -->
+                    <div class="flex items-center">
+                        <img src="{{ asset('images/Rajshahi_College_Logo.svg') }}" alt="Rajshahi College Logo" 
+                             class="w-16 h-16 sm:w-20 sm:h-20 object-contain">
+                    </div>
+                    
+                    <!-- Program Logo (Center) -->
+                    <div class="flex items-center">
+                        <img src="{{ asset('images/statistics-alumni-logo.png') }}" alt="Statistics Alumni Association Logo" 
+                             class="w-20 h-20 sm:w-24 sm:h-24 object-contain">
+                    </div>
+                    
+                    <!-- Association Logo (Right) -->
+                    <div class="flex items-center">
+                        <img src="{{ asset('images/assesion.png') }}" alt="Association Logo" 
+                             class="w-16 h-16 sm:w-20 sm:h-20 object-contain">
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- Foreground Content -->
-        <div class="relative z-10 text-center text-white max-w-5xl mx-auto px-4 " style="backdrop-filter: blur(1.2px);">
+        <div class="relative z-10 text-center text-white max-w-5xl mx-auto px-4" style="backdrop-filter: blur(1.2px);">
             <!-- Animated Glass Text Block -->
-            <div class="fade-in mt-32  py-8 ">
+            <div class="fade-in py-8">
                 <h1 class="text-4xl md:text-5xl font-extrabold leading-tight mb-6 text-yellow-500">
                     <!-- Animated Letters -->
-                    <span class="fade-letter" style="animation-delay: 0s;">S</span>
-                    <span class="fade-letter" style="animation-delay: 0.1s;">T</span>
-                    <span class="fade-letter" style="animation-delay: 0.2s;">A</span>
-                    <span class="fade-letter" style="animation-delay: 0.3s;">T</span>
-                    <span class="fade-letter" style="animation-delay: 0.3s;">I</span>
-                    <span class="fade-letter" style="animation-delay: 0.5s;">S</span>
-                    <span class="fade-letter" style="animation-delay: 0.6s;">T</span>
-                    <span class="fade-letter" style="animation-delay: 0.7s;">I</span>
-                    <span class="fade-letter" style="animation-delay: 0.8s;">C</span>
-                    <span class="fade-letter" style="animation-delay: 0.9s;">S</span>
+                    <span class="fade-letter" style="animation-delay: 0s;">D</span>
+                    <span class="fade-letter" style="animation-delay: 0.1s;">E</span>
+                    <span class="fade-letter" style="animation-delay: 0.2s;">P</span>
+                    <span class="fade-letter" style="animation-delay: 0.3s;">A</span>
+                    <span class="fade-letter" style="animation-delay: 0.4s;">R</span>
+                    <span class="fade-letter" style="animation-delay: 0.5s;">T</span>
+                    <span class="fade-letter" style="animation-delay: 0.6s;">M</span>
+                    <span class="fade-letter" style="animation-delay: 0.7s;">E</span>
+                    <span class="fade-letter" style="animation-delay: 0.8s;">N</span>
+                    <span class="fade-letter" style="animation-delay: 0.9s;">T</span>
                     <span>&nbsp;</span>
-                    <span class="fade-letter" style="animation-delay: 0.8s;">D</span>
-                    <span class="fade-letter" style="animation-delay: 0.9s;">E</span>
-                    <span class="fade-letter" style="animation-delay: 1.0s;">P</span>
-                    <span class="fade-letter" style="animation-delay: 1.1s;">A</span>
-                    <span class="fade-letter" style="animation-delay: 1.2s;">R</span>
+                    <span class="fade-letter" style="animation-delay: 1.0s;">O</span>
+                    <span class="fade-letter" style="animation-delay: 1.1s;">F</span>
+                    <span>&nbsp;</span>
+                    <span class="fade-letter" style="animation-delay: 1.2s;">S</span>
                     <span class="fade-letter" style="animation-delay: 1.3s;">T</span>
-                    <span class="fade-letter" style="animation-delay: 1.4s;">M</span>
-                    <span class="fade-letter" style="animation-delay: 1.5s;">E</span>
-                    <span class="fade-letter" style="animation-delay: 1.6s;">N</span>
-                    <span class="fade-letter" style="animation-delay: 1.7s;">T</span>
+                    <span class="fade-letter" style="animation-delay: 1.4s;">A</span>
+                    <span class="fade-letter" style="animation-delay: 1.5s;">T</span>
+                    <span class="fade-letter" style="animation-delay: 1.6s;">I</span>
+                    <span class="fade-letter" style="animation-delay: 1.7s;">S</span>
+                    <span class="fade-letter" style="animation-delay: 1.8s;">T</span>
+                    <span class="fade-letter" style="animation-delay: 1.9s;">I</span>
+                    <span class="fade-letter" style="animation-delay: 2.0s;">C</span>
+                    <span class="fade-letter" style="animation-delay: 2.1s;">S</span>
                 </h1>
 
                 <div
                     class="text-3xl font-bold text-white bg-gradient-to-r from-white to-white bg-clip-text text-transparent mb-4 tracking-wide">
-                    Reunion 2025
+                    Rajshahi College
                 </div>
 
                 <p class="text-xl md:text-2xl text-white/90 max-w-3xl mx-auto leading-relaxed mb-8">
@@ -76,7 +104,7 @@
                 <h2 class="text-4xl md:text-5xl font-bold text-blue-900 mb-6">About Our Reunion</h2>
                 <p class="text-xl text-black max-w-3xl mx-auto leading-relaxed">
                     Join us for an unforgettable evening celebrating the bonds we've built and the memories we've
-                    created together at Statistics Department.
+                    created together at Department of Statistics.
                 </p>
             </div>
 

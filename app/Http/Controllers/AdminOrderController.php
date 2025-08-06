@@ -53,12 +53,25 @@ class AdminOrderController extends Controller
         $order->save();
         return redirect()->back()->with('status', 'Order status updated!');
     }
-    public function export(Request $request)
-{
-    if (!Auth::user() || Auth::user()->role !== 'admin') {
-        abort(403, 'Unauthorized');
+
+    public function delete(Request $request, $orderId)
+    {
+        if (!Auth::user() || Auth::user()->role !== 'admin') {
+            abort(403, 'Unauthorized');
+        }
+        
+        $order = Order::findOrFail($orderId);
+        $order->delete();
+        
+        return redirect()->back()->with('status', 'Order removed successfully! User can now submit a new transaction.');
     }
-    $filters = $request->only(['status', 'phone', 'email', 'trxid']);
-    return Excel::download(new OrdersExport($filters), 'orders.xlsx');
-}
+
+    public function export(Request $request)
+    {
+        if (!Auth::user() || Auth::user()->role !== 'admin') {
+            abort(403, 'Unauthorized');
+        }
+        $filters = $request->only(['status', 'phone', 'email', 'trxid']);
+        return Excel::download(new OrdersExport($filters), 'orders.xlsx');
+    }
 }

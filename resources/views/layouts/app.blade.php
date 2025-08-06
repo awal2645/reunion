@@ -260,7 +260,6 @@
         </script>
     @endif
     <div class="min-h-screen bg-gray-100">
-        @include('components.nav-link')
         <!-- Page Content -->
         <main>
             @yield('content')

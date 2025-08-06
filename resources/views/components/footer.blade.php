@@ -50,8 +50,7 @@
 
         <!-- Footer Bottom -->
         <div class="border-t border-blue-300/40 mt-12 pt-6 text-sm text-blue-600 text-center">
-            © 2025 Statistics Department Reunion. Made with <i class="fas fa-heart text-red-400 mx-1"></i> for our
-            incredible team.
+            <p> {{ date('Y') }} Statistics Alumni Association </p>
         </div>
     </div>
 </footer>
