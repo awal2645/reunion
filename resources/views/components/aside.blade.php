@@ -1,6 +1,8 @@
 <!-- Sidebar -->
 @php
-    $order = Auth::user()->orders()->where('status', 'pending')->latest()->first();
+    $user = Auth::user();
+    $hasOrder = $user->orders()->exists();
+    $hasPaidBase = method_exists($user, 'hasPaidBaseRegistration') ? $user->hasPaidBaseRegistration() : $user->orders()->where('status', 'paid')->exists();
 @endphp
 <aside class="w-72 bg-white border-r border-gray-100 flex flex-col py-8 px-6 min-h-screen shadow-md hidden lg:flex">
     <div class="flex flex-col items-center mb-10">
@@ -23,10 +25,12 @@
                 <li><a href="{{ route('admin.orders') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition-all duration-200 text-sm"  @if(request()->routeIs('admin.orders')) style="background-color: #e0e7ff; color: #1e40af;" @endif><i class="fas fa-list w-5"></i> Orders</a></li>
             @else
             <li><a href="{{ route('dashboard') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition-all duration-200 text-sm"  @if(request()->routeIs('dashboard')) style="background-color: #e0e7ff; color: #1e40af;" @endif><i class="fas fa-th-large w-5"></i> Dashboard</a></li>
-            @if(!$order)
-            <li><a href="{{ route('pay.now') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition-all duration-200 text-sm"  @if(request()->routeIs('pay.now')) style="background-color: #e0e7ff; color: #1e40af;" @endif><i class="fas fa-credit-card w-5"></i> Pay Now</a></li>
-            <li><a href="{{ route('pay.guest') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition-all duration-200 text-sm"  @if(request()->routeIs('pay.guest')) style="background-color: #e0e7ff; color: #1e40af;" @endif><i class="fas fa-users w-5"></i> Pay with Guest</a></li>
-            @endif
+                @if(!$hasOrder)
+                    <li><a href="{{ route('pay.now') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition-all duration-200 text-sm"  @if(request()->routeIs('pay.now')) style="background-color: #e0e7ff; color: #1e40af;" @endif><i class="fas fa-credit-card w-5"></i> Pay Now</a></li>
+                    <li><a href="{{ route('pay.guest') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition-all duration-200 text-sm"  @if(request()->routeIs('pay.guest')) style="background-color: #e0e7ff; color: #1e40af;" @endif><i class="fas fa-users w-5"></i> Pay with Guest</a></li>
+                @else
+                    <li><a href="{{ route('pay.for.guest') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition-all duration-200 text-sm"  @if(request()->routeIs('pay.for.guest')) style="background-color: #e0e7ff; color: #1e40af;" @endif><i class="fas fa-credit-card w-5"></i> Pay for Guest</a></li>
+                @endif
             <li><a href="{{ route('transaction.history') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition-all duration-200 text-sm"  @if(request()->routeIs('transaction.history')) style="background-color: #e0e7ff; color: #1e40af;" @endif><i class="fas fa-history w-5"></i> Transaction History</a></li>
             @endif
             {{-- logout  --}}
@@ -81,9 +85,13 @@
                     <li><a href="{{ route('admin.orders') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition-all duration-200 text-sm"  @if(request()->routeIs('admin.orders')) style="background-color: #e0e7ff; color: #1e40af;" @endif><i class="fas fa-list w-5"></i> Orders</a></li>
                 @else
                 <li><a href="{{ route('dashboard') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition-all duration-200 text-sm"  @if(request()->routeIs('dashboard')) style="background-color: #e0e7ff; color: #1e40af;" @endif><i class="fas fa-th-large w-5"></i> Dashboard</a></li>
-                @if(!$order)
-                <li><a href="{{ route('pay.now') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition-all duration-200 text-sm"  @if(request()->routeIs('pay.now')) style="background-color: #e0e7ff; color: #1e40af;" @endif><i class="fas fa-credit-card w-5"></i> Pay Now</a></li>
-                <li><a href="{{ route('pay.guest') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition-all duration-200 text-sm"  @if(request()->routeIs('pay.guest')) style="background-color: #e0e7ff; color: #1e40af;" @endif><i class="fas fa-users w-5"></i> Pay with Guest</a></li>
+                @if(!$hasOrder)
+                    @if(!$hasPaidBase)
+                        <li><a href="{{ route('pay.now') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition-all duration-200 text-sm"  @if(request()->routeIs('pay.now')) style="background-color: #e0e7ff; color: #1e40af;" @endif><i class="fas fa-credit-card w-5"></i> Pay Now</a></li>
+                        <li><a href="{{ route('pay.guest') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition-all duration-200 text-sm"  @if(request()->routeIs('pay.guest')) style="background-color: #e0e7ff; color: #1e40af;" @endif><i class="fas fa-users w-5"></i> Pay with Guest</a></li>
+                    @else
+                        <li><a href="{{ route('pay.for.guest') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition-all duration-200 text-sm"  @if(request()->routeIs('pay.for.guest')) style="background-color: #e0e7ff; color: #1e40af;" @endif><i class="fas fa-credit-card w-5"></i> Pay for Guest</a></li>
+                    @endif
                 @endif
                 <li><a href="{{ route('transaction.history') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition-all duration-200 text-sm"  @if(request()->routeIs('transaction.history')) style="background-color: #e0e7ff; color: #1e40af;" @endif><i class="fas fa-history w-5"></i> Transaction History</a></li>
                 @endif

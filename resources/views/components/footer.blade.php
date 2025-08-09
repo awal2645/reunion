@@ -12,20 +12,6 @@
                 <p class="text-blue-700 max-w-md leading-relaxed mb-6">
                     A heartfelt gathering to honor our shared legacy and lifelong connections.
                 </p>
-                <div class="flex space-x-3">
-                    <a href="#"
-                        class="w-9 h-9 rounded-full bg-white hover:bg-blue-100 flex items-center justify-center transition">
-                        <i class="fab fa-facebook-f text-blue-800 text-sm"></i>
-                    </a>
-                    <a href="#"
-                        class="w-9 h-9 rounded-full bg-white hover:bg-blue-100 flex items-center justify-center transition">
-                        <i class="fab fa-linkedin-in text-blue-800 text-sm"></i>
-                    </a>
-                    <a href="#"
-                        class="w-9 h-9 rounded-full bg-white hover:bg-blue-100 flex items-center justify-center transition">
-                        <i class="fab fa-twitter text-blue-800 text-sm"></i>
-                    </a>
-                </div>
             </div>
 
             <!-- Contact Information -->
@@ -34,15 +20,19 @@
                 <ul class="space-y-3 text-blue-700 text-sm">
                     <li class="flex items-center gap-3">
                         <i class="fas fa-envelope text-blue-500"></i>
-                        <span>reunion@Statistics.com</span>
+                        <a href="mailto:info@rcstatreunion.com">info@rcstatreunion.com</a>
                     </li>
                     <li class="flex items-center gap-3">
                         <i class="fas fa-phone text-blue-500"></i>
-                        <span>(555) 123-4567</span>
+                        <span>01577 281779</span>
                     </li>
                     <li class="flex items-center gap-3">
                         <i class="fas fa-map-marker-alt text-blue-500"></i>
-                        <span>Downtown Convention Center</span>
+                        <span>Rajshahi College Ground</span>
+                    </li>
+                    <li class="flex items-center gap-3">
+                        <i class="fab fa-facebook text-blue-500"></i>
+                        <a href="https://www.facebook.com/StatisticsAlumniAssociation">Facebook</a>
                     </li>
                 </ul>
             </div>

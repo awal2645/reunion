@@ -1,6 +1,11 @@
 @extends('layouts.app')
 @section('content')
-<div class="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-100 py-32 px-4 sm:px-6 lg:px-8">
+<div class="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-100 py-20 px-4 sm:px-6 lg:px-8">
+    <!-- Full-width Event Banner -->
+    <div class="mb-10">
+        <img src="{{ asset('images/banner.jpg') }}" alt="Event Banner"
+             class="w-full max-w-6xl mx-auto h-auto rounded-2xl shadow-2xl border border-gray-100 object-contain bg-white" />
+    </div>
     <div class="max-w-4xl mx-auto">
         <!-- Header Section -->
         <div class="text-center mb-8">

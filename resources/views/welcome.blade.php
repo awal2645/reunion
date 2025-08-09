@@ -38,7 +38,7 @@
         <!-- Foreground Content -->
         <div class="relative z-10 text-center text-white max-w-5xl mx-auto px-4" style="backdrop-filter: blur(1.2px);">
             <!-- Animated Glass Text Block -->
-            <div class="fade-in py-8">
+            <div class="fade-in py-8 mt-28">
                 <h1 class="text-4xl md:text-5xl font-extrabold leading-tight mb-6 text-yellow-500">
                     <!-- Animated Letters -->
                     <span class="fade-letter" style="animation-delay: 0s;">D</span>
@@ -77,7 +77,7 @@
                 </p>
 
                 <!-- Buttons -->
-                <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                <div class="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
                     <a href="/register"
                         class="bg-gradient-to-r from-blue-600 to-blue-400 text-white px-8 py-4 rounded-full font-semibold text-lg hover:scale-105 hover:shadow-2xl transition-all duration-300 shadow-xl">
                         Register Now <i class="fas fa-arrow-right ml-2"></i>
@@ -87,6 +87,45 @@
                         Event Details
                     </a>
                 </div>
+
+                <!-- Countdown Timer -->
+                <div class="bg-white/10 backdrop-blur-md rounded-2xl p-8 mb-8 border border-white/20">
+                    <h3 class="text-2xl font-bold text-white mb-6">Countdown to Reunion 2025</h3>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        <!-- Days -->
+                        <div class="text-center">
+                            <div class="bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl p-4 shadow-lg">
+                                <div class="text-3xl md:text-4xl font-bold text-white" id="days">00</div>
+                                <div class="text-sm text-blue-100 font-semibold">Days</div>
+                            </div>
+                        </div>
+                        
+                        <!-- Hours -->
+                        <div class="text-center">
+                            <div class="bg-gradient-to-br from-green-500 to-green-600 rounded-xl p-4 shadow-lg">
+                                <div class="text-3xl md:text-4xl font-bold text-white" id="hours">00</div>
+                                <div class="text-sm text-green-100 font-semibold">Hours</div>
+                            </div>
+                        </div>
+                        
+                        <!-- Minutes -->
+                        <div class="text-center">
+                            <div class="bg-gradient-to-br from-yellow-500 to-yellow-600 rounded-xl p-4 shadow-lg">
+                                <div class="text-3xl md:text-4xl font-bold text-white" id="minutes">00</div>
+                                <div class="text-sm text-yellow-100 font-semibold">Minutes</div>
+                            </div>
+                        </div>
+                        
+                        <!-- Seconds -->
+                        <div class="text-center">
+                            <div class="bg-gradient-to-br from-red-500 to-red-600 rounded-xl p-4 shadow-lg">
+                                <div class="text-3xl md:text-4xl font-bold text-white" id="seconds">00</div>
+                                <div class="text-sm text-red-100 font-semibold">Seconds</div>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-white/80 text-center mt-4 text-sm">3rd January 2026 • 8:00 AM</p>
+                </div>
             </div>
 
             <!-- Scroll Indicator -->
@@ -95,6 +134,42 @@
             </div>
         </div>
     </section>
+
+    <!-- Countdown Timer JavaScript -->
+    <script>
+        // Set the date we're counting down to (December 16, 2025, 5:00 PM)
+        const countDownDate = new Date("January 3, 2026 08:00:00").getTime();
+
+        // Update the countdown every 1 second
+        const x = setInterval(function() {
+            // Get today's date and time
+            const now = new Date().getTime();
+
+            // Find the distance between now and the countdown date
+            const distance = countDownDate - now;
+
+            // Time calculations for days, hours, minutes and seconds
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            // Display the result in the elements
+            document.getElementById("days").innerHTML = days.toString().padStart(2, '0');
+            document.getElementById("hours").innerHTML = hours.toString().padStart(2, '0');
+            document.getElementById("minutes").innerHTML = minutes.toString().padStart(2, '0');
+            document.getElementById("seconds").innerHTML = seconds.toString().padStart(2, '0');
+
+            // If the countdown is finished, display a message
+            if (distance < 0) {
+                clearInterval(x);
+                document.getElementById("days").innerHTML = "00";
+                document.getElementById("hours").innerHTML = "00";
+                document.getElementById("minutes").innerHTML = "00";
+                document.getElementById("seconds").innerHTML = "00";
+            }
+        }, 1000);
+    </script>
 
 
     <!-- About Section -->
@@ -165,20 +240,20 @@
             <!-- Left Info Grid -->
             <div class="space-y-8">
               <!-- Date -->
-              <div class="flex items-start gap-5 p-6 bg-white rounded-xl shadow-lg border-l-4 border-blue-700 hover:shadow-xl transition">
-                <img src="https://cdn-icons-png.flaticon.com/512/747/747310.png" class="w-12 h-12" alt="Calendar Icon" />
-                <div>
-                  <h3 class="text-xl font-bold text-blue-900 mb-1">Date</h3>
-                  <p class="text-blue-700">Saturday, March 15, 2025</p>
+                              <div class="flex items-start gap-5 p-6 bg-white rounded-xl shadow-lg border-l-4 border-blue-700 hover:shadow-xl transition">
+                  <img src="https://cdn-icons-png.flaticon.com/512/747/747310.png" class="w-12 h-12" alt="Calendar Icon" />
+                  <div>
+                    <h3 class="text-xl font-bold text-blue-900 mb-1">Date</h3>
+                    <p class="text-blue-700">Tuesday, January 3, 2026</p>
+                  </div>
                 </div>
-              </div>
       
               <!-- Time -->
               <div class="flex items-start gap-5 p-6 bg-white rounded-xl shadow-lg border-l-4 border-blue-600 hover:shadow-xl transition">
                 <img src="https://cdn-icons-png.flaticon.com/512/1827/1827504.png" class="w-12 h-12" alt="Clock Icon" />
                 <div>
                   <h3 class="text-xl font-bold text-blue-900 mb-1">Time</h3>
-                  <p class="text-blue-700">5:00 PM – 11:00 PM</p>
+                  <p class="text-blue-700">8:00 AM – 6:00 PM</p>
                 </div>
               </div>
       
@@ -187,7 +262,7 @@
                 <img src="https://cdn-icons-png.flaticon.com/512/684/684908.png" class="w-12 h-12" alt="Location Icon" />
                 <div>
                   <h3 class="text-xl font-bold text-blue-900 mb-1">Venue</h3>
-                  <p class="text-blue-700">Grand Ballroom, Downtown Convention Center<br>123 Main Street, City Center</p>
+                  <p class="text-blue-700">Rajshahi College Ground<br>Rajshahi, Bangladesh</p>
                 </div>
               </div>
       
@@ -196,7 +271,7 @@
                 <img src="https://cdn-icons-png.flaticon.com/512/892/892458.png" class="w-12 h-12" alt="Dress Code Icon" />
                 <div>
                   <h3 class="text-xl font-bold text-blue-900 mb-1">Dress Code</h3>
-                  <p class="text-blue-700">Business Casual / Semi-Formal</p>
+                  <p class="text-blue-700">We are provide</p>
                 </div>
               </div>
             </div>

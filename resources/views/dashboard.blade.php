@@ -179,7 +179,113 @@
             @endif
 
             <!-- Payment Invoice -->
-            @if(isset($order) && $order)
+            @if(isset($pendingOrders) && $pendingOrders && $pendingOrders->count() > 0)
+            <div class="mt-8">
+                <div class="bg-white rounded-3xl shadow-xl border border-gray-100 overflow-hidden">
+                    <div class="bg-gradient-to-r from-green-600 to-green-700 px-8 py-6">
+                        <h2 class="text-2xl font-bold text-white mb-2 flex items-center gap-3">
+                            <i class="fas fa-file-invoice-dollar"></i>
+                            Payment Invoice ({{ $pendingOrders->count() }} pending)
+                        </h2>
+                        <p class="text-green-100">Aggregated pending orders</p>
+                    </div>
+                    <div class="p-8">
+                        @php
+                            $allGuests = [];
+                            $totalAmount = 0;
+                            $trxids = [];
+                            foreach ($pendingOrders as $po) {
+                                $totalAmount += (int)$po->amount;
+                                $trxids[] = $po->trxid;
+                                if (is_array($po->guest_details)) {
+                                    foreach ($po->guest_details as $g) { $allGuests[] = $g; }
+                                }
+                            }
+                            $chargeableGuests = collect($allGuests)->filter(function($g){ return isset($g['age']) && (int)$g['age'] > 5; })->count();
+                        @endphp
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                            <div class="space-y-4">
+                                <div class="flex justify-between items-center py-3 border-b border-gray-100">
+                                    <span class="text-gray-600 font-medium">Name:</span>
+                                    <span class="font-semibold text-gray-900">{{ Auth::user()->full_name }}</span>
+                                </div>
+                                <div class="flex justify-between items-center py-3 border-b border-gray-100">
+                                    <span class="text-gray-600 font-medium">Email:</span>
+                                    <span class="font-semibold text-gray-900">{{ Auth::user()->email }}</span>
+                                </div>
+                                <div class="flex justify-between items-center py-3 border-b border-gray-100">
+                                    <span class="text-gray-600 font-medium">Phone:</span>
+                                    <span class="font-semibold text-gray-900">{{ Auth::user()->contact_number ?? 'N/A' }}</span>
+                                </div>
+                                <div class="flex justify-between items-center py-3 border-b border-gray-100">
+                                    <span class="text-gray-600 font-medium">TRXIDs:</span>
+                                    <span class="font-semibold text-blue-600">{{ implode(', ', $trxids) }}</span>
+                                </div>
+                                <div class="flex justify-between items-center py-3 border-b border-gray-100">
+                                    <span class="text-gray-600 font-medium">Date Range:</span>
+                                    <span class="font-semibold text-gray-900">{{ $pendingOrders->first()->created_at->format('d M Y, h:i A') }} — {{ $pendingOrders->last()->created_at->format('d M Y, h:i A') }}</span>
+                                </div>
+                            </div>
+                            <div class="bg-gradient-to-br from-green-50 to-green-100 rounded-2xl p-6 border border-green-200">
+                                <h3 class="text-lg font-semibold text-green-900 mb-4">Payment Summary</h3>
+                                <div class="space-y-3">
+                                    <div class="flex justify-between items-center">
+                                        <span class="text-gray-700">Registration Fee:</span>
+                                        <span class="font-semibold text-gray-900">৳{{ number_format($paymentAmount) }}</span>
+                                    </div>
+                                    <div class="text-xs text-green-700 flex items-center gap-2">
+                                        <i class="fas fa-check-circle"></i>
+                                        Base fee already paid earlier
+                                    </div>
+                                    <div class="flex justify-between items-center">
+                                        <span class="text-gray-700">Guest Fees ({{ $chargeableGuests }}):</span>
+                                        <span class="font-semibold text-gray-900">৳{{ number_format($totalAmount - $paymentAmount) }}</span>
+                                    </div>
+                                    <div class="border-t border-green-200 pt-3 mt-3">
+                                        <div class="flex justify-between items-center text-lg font-bold">
+                                            <span class="text-green-900">Total Pending:</span>
+                                            <span class="text-green-700">৳{{ number_format($totalAmount) }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        @if(count($allGuests))
+                        <div class="mt-8">
+                            <h3 class="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+                                <i class="fas fa-users text-blue-500"></i>
+                                Guest Details ({{ count($allGuests) }})
+                            </h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                                @foreach($allGuests as $guest)
+                                <div class="bg-white border border-gray-200 rounded-xl p-4 shadow-sm">
+                                    <div class="flex items-center gap-3 mb-3">
+                                        <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center">
+                                            <i class="fas fa-user text-blue-600 text-sm"></i>
+                                        </div>
+                                        <div class="font-semibold text-gray-900">{{ $guest['name'] ?? 'N/A' }}</div>
+                                    </div>
+                                    <div class="space-y-1 text-sm text-gray-600">
+                                        <div><span class="font-medium">Relation:</span> {{ $guest['relation'] ?? 'N/A' }}</div>
+                                        <div><span class="font-medium">Age:</span> {{ $guest['age'] ?? 'N/A' }} years</div>
+                                    </div>
+                                </div>
+                                @endforeach
+                            </div>
+                        </div>
+                        @endif
+
+                        <div class="mt-8 text-center">
+                            <span class="inline-flex items-center gap-2 px-6 py-3 rounded-full font-semibold text-lg bg-yellow-100 text-yellow-700 border border-yellow-200">
+                                <i class="fas fa-clock"></i>
+                                Payment Status: Pending ({{ $pendingOrders->count() }} orders)
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @elseif(isset($order) && $order)
             <div class="mt-8">
                 <div class="bg-white rounded-3xl shadow-xl border border-gray-100 overflow-hidden">
                     <div class="bg-gradient-to-r from-green-600 to-green-700 px-8 py-6">
@@ -219,19 +325,29 @@
                             <!-- Payment Summary -->
                             <div class="bg-gradient-to-br from-green-50 to-green-100 rounded-2xl p-6 border border-green-200">
                                 <h3 class="text-lg font-semibold text-green-900 mb-4">Payment Summary</h3>
+                                @php
+                                    $guestDetails = is_array($order->guest_details) ? $order->guest_details : [];
+                                    $chargeableGuests = collect($guestDetails)->filter(function($g){
+                                        return isset($g['age']) && (int)$g['age'] > 5;
+                                    })->count();
+                                    $guestFees = $chargeableGuests * 1000;
+                                    $baseComponent = max(0, (int)$order->amount - $guestFees);
+                                    $baseIncluded = $baseComponent > 0;
+                                @endphp
                                 <div class="space-y-3">
                                     <div class="flex justify-between items-center">
                                         <span class="text-gray-700">Registration Fee:</span>
-                                        <span class="font-semibold text-gray-900">৳{{ number_format($paymentAmount) }}</span>
+                                        <span class="font-semibold text-gray-900">৳{{ number_format($baseIncluded ? $baseComponent : 0) }}</span>
                                     </div>
-                                    @php
-                                        $paidGuests = collect($order->guest_details)->filter(function($g) { 
-                                            return isset($g['age']) && $g['age'] > 5; 
-                                        });
-                                    @endphp
+                                    @if(!$baseIncluded)
+                                        <div class="text-xs text-green-700 flex items-center gap-2">
+                                            <i class="fas fa-check-circle"></i>
+                                            Base fee already paid earlier
+                                        </div>
+                                    @endif
                                     <div class="flex justify-between items-center">
-                                        <span class="text-gray-700">Guest Fees ({{ $paidGuests->count() }}):</span>
-                                        <span class="font-semibold text-gray-900">৳{{ $paidGuests->count() * 1000 }}</span>
+                                        <span class="text-gray-700">Guest Fees ({{ $chargeableGuests }}):</span>
+                                        <span class="font-semibold text-gray-900">৳{{ number_format($guestFees) }}</span>
                                     </div>
                                     <div class="border-t border-green-200 pt-3 mt-3">
                                         <div class="flex justify-between items-center text-lg font-bold">

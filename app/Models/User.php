@@ -83,4 +83,37 @@ class User extends Authenticatable
     {
         return $this->hasMany(Order::class);
     }
+
+    /**
+     * Determine if the user has already paid the base registration fee
+     * in any PAID order. Handles first-time payments that may include guests.
+     */
+    public function hasPaidBaseRegistration(): bool
+    {
+        $paidOrders = $this->orders()->get();
+        if ($paidOrders->isEmpty()) {
+            return false;
+        }
+
+        $startYear = (int) explode('-', (string) $this->batch_year)[0];
+        $baseAmount = $startYear >= 2018 ? 1000 : ($startYear >= 2013 ? 1500 : 2000);
+
+        foreach ($paidOrders as $order) {
+            $guestDetails = is_array($order->guest_details) ? $order->guest_details : [];
+            $chargeableGuests = 0;
+            foreach ($guestDetails as $guest) {
+                if (isset($guest['age']) && (int) $guest['age'] > 5) {
+                    $chargeableGuests++;
+                }
+            }
+            $guestFees = $chargeableGuests * 1000;
+            $expectedWithBase = $baseAmount + $guestFees;
+
+            if ($order->amount === $expectedWithBase || ($guestFees === 0 && $order->amount === $baseAmount)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }
