@@ -23,7 +23,8 @@
             @if(Auth::user()->role == 'admin')
                 <li><a href="{{ route('admin.dashboard') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition-all duration-200 text-sm"  @if(request()->routeIs('admin.dashboard')) style="background-color: #e0e7ff; color: #1e40af;" @endif><i class="fas fa-th-large w-5"></i> Dashboard</a></li>
                 <li><a href="{{ route('admin.orders') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition-all duration-200 text-sm"  @if(request()->routeIs('admin.orders')) style="background-color: #e0e7ff; color: #1e40af;" @endif><i class="fas fa-list w-5"></i> Orders</a></li>
-            @else
+                <li><a href="{{ route('admin.users') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition-all duration-200 text-sm"  @if(request()->routeIs('admin.users')) style="background-color: #e0e7ff; color: #1e40af;" @endif><i class="fas fa-users w-5"></i> Users</a></li>
+                @else
             <li><a href="{{ route('dashboard') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition-all duration-200 text-sm"  @if(request()->routeIs('dashboard')) style="background-color: #e0e7ff; color: #1e40af;" @endif><i class="fas fa-th-large w-5"></i> Dashboard</a></li>
                 @if(!$hasOrder)
                     <li><a href="{{ route('pay.now') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition-all duration-200 text-sm"  @if(request()->routeIs('pay.now')) style="background-color: #e0e7ff; color: #1e40af;" @endif><i class="fas fa-credit-card w-5"></i> Pay Now</a></li>

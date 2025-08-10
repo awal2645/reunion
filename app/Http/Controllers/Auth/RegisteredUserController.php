@@ -94,7 +94,7 @@ class RegisteredUserController extends Controller
             'number_of_children' => $numberOfChildren,
             'photo_path' => $photoPath,
             'favorite_memory' => $request->favorite_memory,
-            'accompanying_guests' => $request->accompanying_guests ,
+            'accompanying_guests' => $request->accompanying_guests ?? 0,
             'tshirt_size' => $request->tshirt_size,
             'willing_to_volunteer' => $request->willing_to_volunteer ?? false,
             'password' => Hash::make($request->password),

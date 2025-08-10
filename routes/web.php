@@ -52,12 +52,22 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/pay-for-guest', [\App\Http\Controllers\PayForGuestController::class, 'show'])->name('pay.for.guest');
     Route::post('/pay-for-guest', [\App\Http\Controllers\PayForGuestController::class, 'submit'])->name('pay.for.guest.submit');
     Route::get('/transaction-history', [\App\Http\Controllers\TransactionHistoryController::class, 'index'])->name('transaction.history');
-    // Admin routes
-    Route::get('/admin/orders', [\App\Http\Controllers\AdminOrderController::class, 'index'])->name('admin.orders');
-    Route::post('/admin/orders/{order}/status', [\App\Http\Controllers\AdminOrderController::class, 'updateStatus'])->name('admin.orders.updateStatus');
-    Route::delete('/admin/orders/{order}', [\App\Http\Controllers\AdminOrderController::class, 'delete'])->name('admin.orders.delete');
-    Route::get('/admin/dashboard', [\App\Http\Controllers\AdminDashboardController::class, 'index'])->name('admin.dashboard');
-    Route::get('/admin/orders/export', [\App\Http\Controllers\AdminOrderController::class, 'export'])->name('admin.orders.export');
+    
+    // Admin routes with admin middleware
+    Route::middleware(['auth', 'admin'])->group(function () {
+        Route::get('/admin/orders', [\App\Http\Controllers\AdminOrderController::class, 'index'])->name('admin.orders');
+        Route::post('/admin/orders/{order}/status', [\App\Http\Controllers\AdminOrderController::class, 'updateStatus'])->name('admin.orders.updateStatus');
+        Route::delete('/admin/orders/{order}', [\App\Http\Controllers\AdminOrderController::class, 'delete'])->name('admin.orders.delete');
+        Route::get('/admin/dashboard', [\App\Http\Controllers\AdminDashboardController::class, 'index'])->name('admin.dashboard');
+        Route::get('/admin/orders/export', [\App\Http\Controllers\AdminOrderController::class, 'export'])->name('admin.orders.export');
+        
+        // Admin User Management Routes
+        Route::get('/admin/users', [\App\Http\Controllers\Admin\UserController::class, 'index'])->name('admin.users');
+        Route::get('/admin/users/{user}', [\App\Http\Controllers\Admin\UserController::class, 'show'])->name('admin.users.show');
+        Route::get('/admin/users/{user}/edit', [\App\Http\Controllers\Admin\UserController::class, 'edit'])->name('admin.users.edit');
+        Route::put('/admin/users/{user}', [\App\Http\Controllers\Admin\UserController::class, 'update'])->name('admin.users.update');
+        Route::delete('/admin/users/{user}', [\App\Http\Controllers\Admin\UserController::class, 'destroy'])->name('admin.users.destroy');
+    });
 });
 
 require __DIR__.'/auth.php';

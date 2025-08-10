@@ -89,11 +89,12 @@
                             <span class="ml-2 text-sm text-gray-700">Remember me</span>
                         </label>
 
-                        {{-- @if (Route::has('password.request'))
-                            <a class="text-sm text-blue-600 hover:text-blue-800 font-medium transition-colors" href="{{ route('password.request') }}">
+                        @if (Route::has('password.request'))
+                            <a class="text-sm text-blue-600 hover:text-blue-800 font-medium transition-colors hover:underline" href="{{ route('password.request') }}">
+                                <i class="fas fa-question-circle mr-1"></i>
                                 Forgot password?
                             </a>
-                        @endif --}}
+                        @endif
                     </div>
 
                     <!-- Submit Button -->

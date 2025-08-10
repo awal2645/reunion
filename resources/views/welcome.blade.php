@@ -23,7 +23,7 @@
                     <!-- Program Logo (Center) -->
                     <div class="flex items-center">
                         <img src="{{ asset('images/statistics-alumni-logo.png') }}" alt="Statistics Alumni Association Logo" 
-                             class="w-24 h-24 sm:w-24 sm:h-24 object-contain">
+                             class="w-32 h-32 sm:w-32 sm:h-32 object-contain">
                     </div>
                     
                     <!-- Association Logo (Right) -->

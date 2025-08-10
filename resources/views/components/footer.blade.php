@@ -7,8 +7,10 @@
             <!-- Logo & Description -->
             <div class="text-center lg:text-left">
                 <div class="flex items-center justify-center lg:justify-start gap-3 mb-6">
-                    <img src="{{ asset('images/statistics-alumni-logo.png') }}" alt="Statistics Alumni Association Logo"
-                         class="w-32 h-32 sm:w-40 sm:h-40 lg:w-48 lg:h-48 object-contain">
+                    <a href="{{ route('home') }}">
+                        <img src="{{ asset('images/statistics-alumni-logo.png') }}" alt="Statistics Alumni Association Logo"
+                             class="w-32 h-32 sm:w-40 sm:h-40 lg:w-48 lg:h-48 object-contain">
+                    </a>
                 </div>
                 <p class="text-blue-700 max-w-md mx-auto lg:mx-0 leading-relaxed mb-6 text-sm sm:text-base">
                     A heartfelt gathering to honor our shared legacy and lifelong connections. 
