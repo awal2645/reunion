@@ -275,13 +275,21 @@
                             </div>
                         </div>
                         @endif
-
+                        @if($paymentStatus == 'Pending')
                         <div class="mt-8 text-center">
                             <span class="inline-flex items-center gap-2 px-6 py-3 rounded-full font-semibold text-lg bg-yellow-100 text-yellow-700 border border-yellow-200">
                                 <i class="fas fa-clock"></i>
-                                Payment Status: Pending ({{ $pendingOrders->count() }} orders)
+                                Payment Status: {{ $paymentStatus }} ({{ Auth::user()->unpaidOrdersCount() }} orders)
                             </span>
                         </div>
+                        @else
+                        <div class="mt-8 text-center">
+                            <span class="inline-flex items-center gap-2 px-6 py-3 rounded-full font-semibold text-lg bg-green-100 text-green-700 border border-green-200">
+                                <i class="fas fa-check-circle"></i>
+                                Payment Status: {{ $paymentStatus }}
+                            </span>
+                        </div>
+                        @endif
                     </div>
                 </div>
             </div>

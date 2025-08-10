@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Auth;
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('home');
 
 Route::get('/dashboard', function () {
     $user = Auth::user();
@@ -29,10 +29,13 @@ Route::get('/dashboard', function () {
     if ($pendingOrders->isEmpty()) {
         $order = $user->orders()->latest()->first();
     }
+    
+    // payment status
+    $paymentStatus = $user->getPaymentStatus();
 
     $ordersCount = $user->orders()->count();
     $hasPaidBase = method_exists($user, 'hasPaidBaseRegistration') ? $user->hasPaidBaseRegistration() : $user->orders()->where('status', 'paid')->exists();
-    return view('dashboard', compact('paymentAmount', 'pendingOrders', 'order', 'ordersCount', 'hasPaidBase'));
+    return view('dashboard', compact('paymentAmount', 'pendingOrders', 'order', 'ordersCount', 'hasPaidBase', 'paymentStatus'));
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {

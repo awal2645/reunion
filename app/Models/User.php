@@ -116,4 +116,15 @@ class User extends Authenticatable
 
         return false;
     }
+
+    public function getPaymentStatus(): string
+    {
+        $pendingOrders = $this->orders()->where('status', 'pending')->get();
+        return $pendingOrders->count() > 0 ? 'Pending' : 'Paid';
+    }
+
+    public function unpaidOrdersCount(): int
+    {
+        return $this->orders()->where('status', 'pending')->count();
+    }
 }
