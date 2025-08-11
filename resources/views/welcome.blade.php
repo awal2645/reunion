@@ -82,15 +82,15 @@
                         class="bg-gradient-to-r from-blue-600 to-blue-400 text-white px-8 py-4 rounded-full font-semibold text-lg hover:scale-105 hover:shadow-2xl transition-all duration-300 shadow-xl">
                         Register Now <i class="fas fa-arrow-right ml-2"></i>
                     </a>
-                    <a href="#details"
+                    <a href="/login"
                         class="border-2 border-white/80 text-white px-8 py-4 rounded-full font-semibold text-lg hover:bg-white hover:text-blue-700 transition-all duration-300">
-                        Event Details
+                        Login
                     </a>
                 </div>
 
                 <!-- Countdown Timer -->
                 <div class="bg-white/10 backdrop-blur-md rounded-2xl p-8 mb-8 border border-white/20">
-                    <h3 class="text-2xl font-bold text-white mb-6">Countdown to Reunion 2025</h3>
+                    <h3 class="text-2xl font-bold text-white mb-6">Countdown to Reunion 2026</h3>
                     <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
                         <!-- Days -->
                         <div class="text-center">
