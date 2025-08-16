@@ -7,8 +7,8 @@
 <aside class="w-72 bg-white border-r border-gray-100 flex flex-col py-8 px-6 min-h-screen shadow-md hidden lg:flex">
     <div class="flex flex-col items-center mb-10">
         <div class="w-20 h-20 rounded-full bg-blue-100 flex items-center justify-center text-3xl text-blue-600 mb-4 shadow-lg">
-            @if(Auth::user()->photo_path)
-                <img src="{{ asset('storage/' . Auth::user()->photo_path) }}" alt="Profile Photo" class="w-20 h-20 object-cover rounded-full border-4 border-white shadow-lg">
+            @if(Auth::user()->hasProfilePhoto())
+                <img src="{{ Auth::user()->profile_photo_url }}" alt="Profile Photo" class="w-20 h-20 object-cover rounded-full border-4 border-white shadow-lg">
             @else
                 <i class="fas fa-user"></i>
             @endif
@@ -31,9 +31,11 @@
                     <li><a href="{{ route('pay.guest') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition-all duration-200 text-sm"  @if(request()->routeIs('pay.guest')) style="background-color: #e0e7ff; color: #1e40af;" @endif><i class="fas fa-users w-5"></i> Pay with Guest</a></li>
                 @else
                     <li><a href="{{ route('pay.for.guest') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition-all duration-200 text-sm"  @if(request()->routeIs('pay.for.guest')) style="background-color: #e0e7ff; color: #1e40af;" @endif><i class="fas fa-credit-card w-5"></i> Pay for Guest</a></li>
+                    <li><a href="{{ route('share.payment') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition-all duration-200 text-sm"  @if(request()->routeIs('share.payment')) style="background-color: #e0e7ff; color: #1e40af;" @endif><i class="fas fa-download w-5"></i> Download Banner</a></li>
                 @endif
             <li><a href="{{ route('transaction.history') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition-all duration-200 text-sm"  @if(request()->routeIs('transaction.history')) style="background-color: #e0e7ff; color: #1e40af;" @endif><i class="fas fa-history w-5"></i> Transaction History</a></li>
             @endif
+            <li><a href="{{ route('profile.edit') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition-all duration-200 text-sm"  @if(request()->routeIs('profile.edit')) style="background-color: #e0e7ff; color: #1e40af;" @endif><i class="fas fa-user-edit w-5"></i> Edit Profile</a></li>
             {{-- logout  --}}
             <li class="mt-6"> 
                 <form action="{{ route('logout') }}" method="POST">
@@ -62,8 +64,8 @@
         <div class="flex items-center justify-between p-6 border-b border-gray-200">
             <div class="flex items-center gap-4">
                 <div class="w-14 h-14 rounded-full bg-blue-100 flex items-center justify-center text-2xl text-blue-600">
-                    @if(Auth::user()->photo_path)
-                        <img src="{{ asset('storage/' . Auth::user()->photo_path) }}" alt="Profile Photo" class="w-14 h-14 object-cover rounded-full">
+                    @if(Auth::user()->hasProfilePhoto())
+                        <img src="{{ Auth::user()->profile_photo_url }}" alt="Profile Photo" class="w-14 h-14 object-cover rounded-full">
                     @else
                         <i class="fas fa-user"></i>
                     @endif

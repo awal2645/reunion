@@ -19,7 +19,7 @@
                             </p>
                         </div>
                     </div>
-                    <a href="{{ route('admin.users.index') }}" 
+                    <a href="{{ route('admin.users') }}" 
                        class="inline-flex items-center px-4 py-2 bg-gray-100 text-gray-700 font-semibold rounded-xl border-2 border-gray-200 hover:bg-gray-200 transition-all duration-300">
                         <i class="fas fa-arrow-left mr-2"></i>
                         Back to Users
@@ -29,7 +29,7 @@
 
             <!-- Edit Form -->
             <div class="bg-white rounded-2xl shadow-lg border border-gray-100 p-8">
-                <form method="POST" action="{{ route('admin.users.update', $user->id) }}" enctype="multipart/form-data" class="space-y-8">
+                <form method="POST" action="{{ route('profile.update', $user->id) }}" enctype="multipart/form-data" class="space-y-8">
                     @csrf
                     @method('PUT')
 
@@ -326,37 +326,36 @@
                     <div class="space-y-6">
                         <h3 class="text-xl font-semibold text-gray-900 border-b border-gray-200 pb-3">Profile Photo</h3>
                         
-                        <div class="space-y-4">
-                            <div class="flex items-center space-x-4">
-                                @if($user->photo_path)
-                                    <div class="flex-shrink-0">
-                                        <img class="h-20 w-20 rounded-full object-cover" src="{{ asset('storage/' . $user->photo_path) }}" alt="Current Photo">
-                                    </div>
-                                    <div class="text-sm text-gray-500">
-                                        <p>Current photo</p>
-                                        <p class="text-xs">Upload new photo to replace</p>
-                                    </div>
-                                @else
-                                    <div class="flex-shrink-0">
-                                        <div class="h-20 w-20 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-white font-semibold text-2xl">
-                                            {{ strtoupper(substr($user->full_name, 0, 1)) }}
+                        <div class="space-y-6">
+                            <!-- Current Photo Display -->
+                            <div class="flex items-center space-x-6">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-3">Current Photo</label>
+                                    @if($user->hasProfilePhoto())
+                                        <img class="h-24 w-24 rounded-full object-cover border-4 border-gray-200 shadow-lg" src="{{ $user->profile_photo_url }}" alt="Current Photo">
+                                    @else
+                                        <div class="h-24 w-24 bg-gray-300 rounded-full border-4 border-gray-200 flex items-center justify-center shadow-lg">
+                                            <svg class="w-12 h-12 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                                            </svg>
                                         </div>
+                                    @endif
+                                </div>
+                                
+                                <div class="flex-1">
+                                    <label for="photo" class="block text-sm font-medium text-gray-700 mb-2">Upload New Photo</label>
+                                    <div class="flex items-center space-x-4">
+                                        <input type="file" name="photo" id="photo" accept="image/*"
+                                               class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-green-50 file:text-green-700 hover:file:bg-green-100 transition-all duration-200">
                                     </div>
-                                    <div class="text-sm text-gray-500">
-                                        <p>No photo uploaded</p>
-                                        <p class="text-xs">Upload a profile photo</p>
-                                    </div>
-                                @endif
-                            </div>
-
-                            <div>
-                                <label for="photo" class="block text-sm font-medium text-gray-700 mb-2">Upload New Photo (Optional)</label>
-                                <input type="file" name="photo" id="photo" accept="image/*"
-                                       class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-green-500 focus:ring-green-500 transition-all duration-300">
-                                <p class="mt-1 text-sm text-gray-500">JPG, PNG, GIF up to 2MB</p>
-                                @error('photo')
-                                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                                @enderror
+                                    <p class="mt-2 text-sm text-gray-500">
+                                        <i class="fas fa-info-circle text-green-500 mr-1"></i>
+                                        Supported formats: JPEG, PNG, JPG, GIF. Maximum size: 2MB
+                                    </p>
+                                    @error('photo')
+                                        <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                                    @enderror
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -369,7 +368,7 @@
                             Update User
                         </button>
                         
-                        <a href="{{ route('admin.users.index') }}" 
+                        <a href="{{ route('admin.users') }}" 
                            class="inline-flex items-center justify-center px-8 py-3 bg-gray-100 text-gray-700 font-semibold rounded-xl border-2 border-gray-200 hover:bg-gray-200 transition-all duration-300">
                             <i class="fas fa-times mr-2"></i>
                             Cancel

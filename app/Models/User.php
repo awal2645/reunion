@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Support\Facades\Storage;
 
 class User extends Authenticatable
 {
@@ -83,6 +84,34 @@ class User extends Authenticatable
     public function orders()
     {
         return $this->hasMany(Order::class);
+    }
+
+    /**
+     * Get the payment shares associated with the user.
+     */
+    public function paymentShares()
+    {
+        return $this->hasMany(PaymentShare::class);
+    }
+
+    /**
+     * Get the profile photo URL.
+     */
+    public function getProfilePhotoUrlAttribute()
+    {
+        if ($this->photo_path) {
+            return Storage::url($this->photo_path);
+        }
+        
+        return null;
+    }
+
+    /**
+     * Check if the user has a profile photo.
+     */
+    public function hasProfilePhoto(): bool
+    {
+        return !is_null($this->photo_path);
     }
 
     /**

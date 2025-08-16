@@ -8,6 +8,7 @@ use App\Models\Order;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
@@ -109,17 +110,14 @@ class UserController extends Controller
             'accompanying_guests' => 'required|integer|min:0|max:10',
             'tshirt_size' => 'nullable|string|max:10',
             'willing_to_volunteer' => 'required|boolean',
+            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
         // Handle photo upload if provided
         if ($request->hasFile('photo')) {
-            $request->validate([
-                'photo' => 'image|mimes:jpeg,png,jpg,gif|max:2048'
-            ]);
-
             // Delete old photo if exists
-            if ($user->photo_path && file_exists(storage_path('app/public/' . $user->photo_path))) {
-                unlink(storage_path('app/public/' . $user->photo_path));
+            if ($user->photo_path && Storage::disk('public')->exists($user->photo_path)) {
+                Storage::disk('public')->delete($user->photo_path);
             }
 
             $photoPath = $request->file('photo')->store('profile-photos', 'public');
@@ -139,8 +137,8 @@ class UserController extends Controller
     {
         try {
             // Delete user's photo if exists
-            if ($user->photo_path && file_exists(storage_path('app/public/' . $user->photo_path))) {
-                unlink(storage_path('app/public/' . $user->photo_path));
+            if ($user->photo_path && Storage::disk('public')->exists($user->photo_path)) {
+                Storage::disk('public')->delete($user->photo_path);
             }
 
             // Delete user's orders

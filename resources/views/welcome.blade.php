@@ -316,7 +316,7 @@
       
 
     <!-- Schedule -->
-    <section id="schedule" class="py-20 bg-gradient-to-br from-white via-blue-50 to-blue-100">
+    <section id="schedule" style="display: none;" class=" py-20 bg-gradient-to-br from-white via-blue-50 to-blue-100">
         <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <!-- Section Header -->
           <div class="text-center mb-16">
@@ -386,7 +386,7 @@
       
 
     <!-- Memories Gallery -->
-    <section id="memories" class="py-20 bg-gradient-to-br from-white via-blue-50 to-blue-100">
+    <section id="memories" style="display: none;" class=" py-20 bg-gradient-to-br from-white via-blue-50 to-blue-100">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <!-- Section Header -->
             <div class="text-center mb-16">

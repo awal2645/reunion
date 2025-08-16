@@ -40,7 +40,7 @@ Route::get('/dashboard', function () {
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
@@ -52,6 +52,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/pay-for-guest', [\App\Http\Controllers\PayForGuestController::class, 'show'])->name('pay.for.guest');
     Route::post('/pay-for-guest', [\App\Http\Controllers\PayForGuestController::class, 'submit'])->name('pay.for.guest.submit');
     Route::get('/transaction-history', [\App\Http\Controllers\TransactionHistoryController::class, 'index'])->name('transaction.history');
+    
+    // Share Payment Routes
+    Route::get('/share-payment', [\App\Http\Controllers\SharePaymentController::class, 'show'])->name('share.payment');
     
     // Admin routes with admin middleware
     Route::middleware(['auth', 'admin'])->group(function () {
