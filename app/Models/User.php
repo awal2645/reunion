@@ -120,7 +120,7 @@ class User extends Authenticatable
      */
     public function hasPaidBaseRegistration(): bool
     {
-        $paidOrders = $this->orders()->get();
+        $paidOrders = $this->orders()->where('status', 'paid')->get();
         if ($paidOrders->isEmpty()) {
             return false;
         }
@@ -149,12 +149,108 @@ class User extends Authenticatable
 
     public function getPaymentStatus(): string
     {
+        // Check if user has paid the base registration fee
+        if ($this->hasPaidBaseRegistration()) {
+            return 'Paid';
+        }
+        
+        // Check if user has any pending orders
         $pendingOrders = $this->orders()->where('status', 'pending')->get();
-        return $pendingOrders->count() > 0 ? 'Pending' : 'Paid';
+        if ($pendingOrders->count() > 0) {
+            return 'Pending';
+        }
+        
+        // If no orders at all, consider as unpaid
+        if ($this->orders()->count() === 0) {
+            return 'Unpaid';
+        }
+        
+        // If has orders but none are pending and base fee not paid, consider as pending
+        return 'Pending';
     }
 
     public function unpaidOrdersCount(): int
     {
         return $this->orders()->where('status', 'pending')->count();
+    }
+
+    /**
+     * Get detailed payment status information
+     */
+    public function getDetailedPaymentStatus(): array
+    {
+        $totalOrders = $this->orders()->count();
+        $pendingOrders = $this->orders()->where('status', 'pending')->count();
+        $paidOrders = $this->orders()->where('status', 'paid')->count();
+        $hasPaidBase = $this->hasPaidBaseRegistration();
+        
+        return [
+            'total_orders' => $totalOrders,
+            'pending_orders' => $pendingOrders,
+            'paid_orders' => $paidOrders,
+            'has_paid_base' => $hasPaidBase,
+            'status' => $this->getPaymentStatus(),
+            'base_amount_expected' => $this->getExpectedBaseAmount(),
+        ];
+    }
+
+    /**
+     * Get the expected base amount for this user's batch year
+     */
+    private function getExpectedBaseAmount(): int
+    {
+        if (!$this->batch_year) {
+            return 0;
+        }
+        
+        $startYear = (int) explode('-', (string) $this->batch_year)[0];
+        if ($startYear >= 2018) {
+            return 1000;
+        } elseif ($startYear >= 2013) {
+            return 1500;
+        } else {
+            return 2000;
+        }
+    }
+
+    /**
+     * Debug payment status for troubleshooting
+     */
+    public function debugPaymentStatus(): array
+    {
+        $paidOrders = $this->orders()->where('status', 'paid')->get();
+        $pendingOrders = $this->orders()->where('status', 'pending')->get();
+        
+        $debug = [
+            'user_id' => $this->id,
+            'batch_year' => $this->batch_year,
+            'expected_base_amount' => $this->getExpectedBaseAmount(),
+            'total_orders' => $this->orders()->count(),
+            'paid_orders_count' => $paidOrders->count(),
+            'pending_orders_count' => $pendingOrders->count(),
+            'has_paid_base' => $this->hasPaidBaseRegistration(),
+            'payment_status' => $this->getPaymentStatus(),
+        ];
+        
+        // Add order details for debugging
+        $debug['paid_orders'] = $paidOrders->map(function($order) {
+            return [
+                'id' => $order->id,
+                'amount' => $order->amount,
+                'status' => $order->status,
+                'guest_details' => $order->guest_details,
+            ];
+        })->toArray();
+        
+        $debug['pending_orders'] = $pendingOrders->map(function($order) {
+            return [
+                'id' => $order->id,
+                'amount' => $order->amount,
+                'status' => $order->status,
+                'guest_details' => $order->guest_details,
+            ];
+        })->toArray();
+        
+        return $debug;
     }
 }
