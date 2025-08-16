@@ -187,7 +187,7 @@
                     <div class="bg-gradient-to-r from-green-600 to-green-700 px-8 py-6">
                         <h2 class="text-2xl font-bold text-white mb-2 flex items-center gap-3">
                             <i class="fas fa-file-invoice-dollar"></i>
-                            Payment Invoice ({{ $pendingOrders->count() }} pending)
+                            Payment Invoice 
                         </h2>
                         <p class="text-green-100">Aggregated pending orders</p>
                     </div>
