@@ -245,7 +245,7 @@
                                     </div>
                                     <div class="border-t border-green-200 pt-3 mt-3">
                                         <div class="flex justify-between items-center text-lg font-bold">
-                                            <span class="text-green-900">Total Pending:</span>
+                                            <span class="text-green-900">Total {{ $paymentStatus }}:</span>
                                             <span class="text-green-700">৳{{ number_format($totalAmount) }}</span>
                                         </div>
                                     </div>
