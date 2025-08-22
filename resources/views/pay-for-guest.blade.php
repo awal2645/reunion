@@ -74,12 +74,12 @@
                                 </div>
                                 <div class="sm:col-span-2">
                                     <div class="text-xs sm:text-sm text-gray-600 mb-1">Account Name</div>
-                                    <div class="font-semibold text-gray-900 text-sm sm:text-base">Statistics Alumni Reunion</div>
+                                    <div class="font-semibold text-gray-900 text-sm sm:text-base">MD. SAZEDUR RAHMAN</div>
                                 </div>
                                 <div class="sm:col-span-2">
                                     <div class="text-xs sm:text-sm text-gray-600 mb-1">Account Number</div>
                                     <div class="flex flex-col sm:flex-row items-start sm:items-center gap-2">
-                                        <span class="font-mono font-semibold text-gray-900 text-sm sm:text-base break-all" id="bankAccount">0419101239646</span>
+                                        <span class="font-mono font-semibold text-gray-900 text-sm sm:text-base break-all" id="bankAccount">4396101078888</span>
                                         <button type="button"
                                             onclick="copyBankAccount()"
                                             class="px-3 py-1 bg-blue-500 text-white rounded-lg hover:bg-blue-600 text-xs font-semibold focus:outline-none transition-all duration-300 flex items-center gap-1 w-fit">

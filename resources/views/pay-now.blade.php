@@ -64,12 +64,12 @@
                                 </div>
                                 <div>
                                     <div class="text-sm text-gray-600 mb-1">Account Name</div>
-                                    <div class="font-semibold text-gray-900">Statistics Alumni Reunion</div>
+                                    <div class="font-semibold text-gray-900">MD. SAZEDUR RAHMAN</div>
                                 </div>
                                 <div>
                                     <div class="text-sm text-gray-600 mb-1">Account Number</div>
                                     <div class="flex items-center gap-2">
-                                        <span class="font-mono font-semibold text-gray-900" id="bankAccount">0419101239646</span>
+                                        <span class="font-mono font-semibold text-gray-900" id="bankAccount">4396101078888</span>
                                         <button type="button"
                                             onclick="copyBankAccount()"
                                             class="px-3 py-1 bg-blue-500 text-white rounded-lg hover:bg-blue-600 text-sm font-semibold focus:outline-none transition-all duration-300 flex items-center gap-1">
