@@ -244,7 +244,7 @@
                   <img src="https://cdn-icons-png.flaticon.com/512/747/747310.png" class="w-12 h-12" alt="Calendar Icon" />
                   <div>
                     <h3 class="text-xl font-bold text-blue-900 mb-1">Date</h3>
-                    <p class="text-blue-700">Tuesday, January 3, 2026</p>
+                    <p class="text-blue-700">Saturday, January 3, 2026</p>
                   </div>
                 </div>
       
