@@ -238,8 +238,25 @@
             });
         </script>
     @endif
-
-    @if($errors->any())
+    @if(session('success'))
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            Swal.fire({
+                toast: true,
+                position: 'top-end',
+                icon: 'success',
+                title: @json(session('success')),
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                customClass: {
+                    popup: 'rounded-lg text-base'
+                }
+            });
+        });
+    </script>
+@endif
+    {{-- @if($errors->any())
         <script>
             document.addEventListener('DOMContentLoaded', function() {
                 const errorMessages = @json($errors->all());
@@ -258,7 +275,7 @@
                 });
             });
         </script>
-    @endif
+    @endif --}}
     <div class="min-h-screen bg-gray-100">
         <!-- Page Content -->
         <main>

@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\Order;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Storage;
 
@@ -84,49 +85,38 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        $validated = $request->validate([
-            'full_name' => 'required|string|max:255',
-            'nickname' => 'nullable|string|max:255',
-            'blood_group' => 'required|string|max:10',
-            'session' => 'required|string|max:255',
-            'batch_year' => 'required|integer|min:1990|max:2025',
-            'contact_number' => 'required|string|max:255',
-            'email' => ['required', 'email', Rule::unique('users')->ignore($user->id)],
-            'facebook_profile' => 'nullable|url|max:255',
-            'whatsapp_number' => 'nullable|string|max:255',
-            'present_address' => 'required|string|max:500',
-            'permanent_address' => 'required|string|max:500',
-            'country_of_residence' => 'required|string|max:255',
-            'city_of_residence' => 'required|string|max:255',
-            'occupation' => 'nullable|string|max:255',
-            'organization_name' => 'nullable|string|max:255',
-            'designation' => 'nullable|string|max:255',
-            'work_location' => 'nullable|string|max:255',
-            'marital_status' => 'required|in:single,married,divorced,widowed',
-            'spouse_name' => 'nullable|string|max:255',
-            'number_of_children' => 'required|integer|min:0|max:10',
-            'children_names_ages' => 'nullable|string|max:1000',
-            'favorite_memory' => 'nullable|string|max:1000',
-            'accompanying_guests' => 'required|integer|min:0|max:10',
-            'tshirt_size' => 'nullable|string|max:10',
-            'willing_to_volunteer' => 'required|boolean',
-            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-        ]);
+        $validated = $request->all();
 
-        // Handle photo upload if provided
-        if ($request->hasFile('photo')) {
-            // Delete old photo if exists
-            if ($user->photo_path && Storage::disk('public')->exists($user->photo_path)) {
-                Storage::disk('public')->delete($user->photo_path);
+        // Handle password update if provided
+        if ($request->filled('password') && $request->filled('password_confirmation')) {
+            // Check if current password is provided and correct
+            if ($request->filled('current_password')) {
+                if (!Hash::check($request->current_password, $user->password)) {
+                    return redirect()->back()->with('error', 'Current password is incorrect');
+                }
             }
-
-            $photoPath = $request->file('photo')->store('profile-photos', 'public');
-            $validated['photo_path'] = $photoPath;
+            
+            if ($request->password === $request->password_confirmation) {
+                $validated['password'] = Hash::make($request->password);
+                // Log for debugging
+                Log::info('Password updated for user: ' . $user->id);
+            } else {
+                return redirect()->back()->with('error', 'Password and Confirm Password do not match');
+            }
+        } else {
+            // If password fields are empty, remove them from validation
+            unset($validated['password']);
         }
+
+        // Remove password confirmation and current password from data
+        unset($validated['password_confirmation']);
+        unset($validated['current_password']);
+
+
 
         $user->update($validated);
 
-        return redirect()->route('admin.users')
+        return redirect()->back()
             ->with('success', 'User updated successfully!');
     }
 

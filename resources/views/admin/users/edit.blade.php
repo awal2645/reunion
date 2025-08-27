@@ -27,9 +27,11 @@
                 </div>
             </div>
 
+
+
             <!-- Edit Form -->
             <div class="bg-white rounded-2xl shadow-lg border border-gray-100 p-8">
-                <form method="POST" action="{{ route('profile.update', $user->id) }}" enctype="multipart/form-data" class="space-y-8">
+                <form method="POST" action="{{ route('admin.users.update', $user->id) }}" enctype="multipart/form-data" class="space-y-8">
                     @csrf
                     @method('PUT')
 
@@ -73,6 +75,110 @@
                         </div>
                     </div>
 
+                    <!-- Password Update -->
+                    <div class="space-y-6">
+                        <h3 class="text-xl font-semibold text-gray-900 border-b border-gray-200 pb-3">Update Password</h3>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <!-- Current Password -->
+                            <div>
+                                <label for="current_password" class="block text-sm font-medium text-gray-700 mb-2">
+                                    Current Password
+                                </label>
+                                <div class="relative">
+                                    <input type="password" 
+                                           name="current_password" 
+                                           id="current_password"
+                                           class="block w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-200"
+                                           placeholder="Enter your current password">
+                                    <button type="button" 
+                                            onclick="togglePasswordVisibility('current_password')"
+                                            class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600">
+                                        <i class="fas fa-eye" id="current_password_icon"></i>
+                                    </button>
+                                </div>
+                                @error('current_password')
+                                    <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                                @enderror
+
+                            </div>
+
+                            <!-- New Password -->
+                            <div>
+                                <label for="password" class="block text-sm font-medium text-gray-700 mb-2">
+                                    New Password
+                                </label>
+                                <div class="relative">
+                                    <input type="password" 
+                                           name="password" 
+                                           id="password"
+                                           class="block w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-200"
+                                           placeholder="Enter new password">
+                                    <button type="button" 
+                                            onclick="togglePasswordVisibility('password')"
+                                            class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600">
+                                        <i class="fas fa-eye" id="password_icon"></i>
+                                    </button>
+                                </div>
+                                @error('password')
+                                    <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                                @enderror
+
+                            </div>
+
+                            <!-- Confirm New Password -->
+                            <div>
+                                <label for="password_confirmation" class="block text-sm font-medium text-gray-700 mb-2">
+                                    Confirm New Password
+                                </label>
+                                <div class="relative">
+                                    <input type="password" 
+                                           name="password_confirmation" 
+                                           id="password_confirmation"
+                                           class="block w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-200"
+                                           placeholder="Confirm new password">
+                                    <button type="button" 
+                                            onclick="togglePasswordVisibility('password_confirmation')"
+                                            class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600">
+                                        <i class="fas fa-eye" id="password_confirmation_icon"></i>
+                                    </button>
+                                </div>
+                                @error('password_confirmation')
+                                    <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                                @enderror
+
+                            </div>
+
+                            <!-- Password Requirements -->
+                            <div class="md:col-span-2">
+                                <div class="bg-gray-50 rounded-xl p-4 border border-gray-200">
+                                    <h4 class="text-sm font-semibold text-gray-700 mb-2 flex items-center gap-2">
+                                        <i class="fas fa-shield-alt text-green-500"></i>
+                                        Password Requirements
+                                    </h4>
+                                    <ul class="text-sm text-gray-600 space-y-1">
+                                        <li class="flex items-center gap-2">
+                                            <i class="fas fa-check-circle text-green-500 text-xs"></i>
+                                            At least 8 characters long
+                                        </li>
+                                        <li class="flex items-center gap-2">
+                                            <i class="fas fa-check-circle text-green-500 text-xs"></i>
+                                            Contains at least one uppercase letter
+                                        </li>
+                                        <li class="flex items-center gap-2">
+                                            <i class="fas fa-check-circle text-green-500 text-xs"></i>
+                                            Contains at least one lowercase letter
+                                        </li>
+                                        <li class="flex items-center gap-2">
+                                            <i class="fas fa-check-circle text-green-500 text-xs"></i>
+                                            Contains at least one number
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <!-- Submit Buttons -->
                     <div class="flex flex-col sm:flex-row gap-4 pt-6 border-t border-gray-200">
                         <button type="submit" 
@@ -103,6 +209,21 @@ function toggleSpouseField() {
     } else {
         spouseField.classList.add('hidden');
         document.getElementById('spouse_name').value = '';
+    }
+}
+
+function togglePasswordVisibility(fieldId) {
+    const passwordField = document.getElementById(fieldId);
+    const icon = document.getElementById(fieldId + '_icon');
+    
+    if (passwordField.type === 'password') {
+        passwordField.type = 'text';
+        icon.classList.remove('fa-eye');
+        icon.classList.add('fa-eye-slash');
+    } else {
+        passwordField.type = 'password';
+        icon.classList.remove('fa-eye-slash');
+        icon.classList.add('fa-eye');
     }
 }
 
