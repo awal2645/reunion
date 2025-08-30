@@ -14,14 +14,7 @@ Route::get('/dashboard', function () {
     if($user->role === 'admin'){
         return redirect()->route('admin.dashboard');
     }
-    $startYear = (int) explode('-', $user->batch_year)[0];
-    if ($startYear >= 2018) {
-        $paymentAmount = 1000;
-    } elseif ($startYear >= 2013) {
-        $paymentAmount = 1500;
-    } else {
-        $paymentAmount = 2000;
-    }
+    $paymentAmount = $user->getExpectedBaseAmount();
     // Gather all pending orders for aggregation in the invoice
     $pendingOrders = $user->orders()->orderBy('created_at')->get();
     // Fallback single order when there is no pending order

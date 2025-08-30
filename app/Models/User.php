@@ -23,13 +23,21 @@ class User extends Authenticatable
         'nickname',
         'blood_group',
         'session',
-        'batch_year',
+
         'contact_number',
         'email',
         'facebook_profile',
         'whatsapp_number',
         'present_address',
+        'present_vill',
+        'present_post_office',
+        'present_thana',
+        'present_district',
         'permanent_address',
+        'permanent_vill',
+        'permanent_post_office',
+        'permanent_thana',
+        'permanent_district',
         'country_of_residence',
         'city_of_residence',
         'occupation',
@@ -44,6 +52,7 @@ class User extends Authenticatable
         'accompanying_guests',
         'tshirt_size',
         'willing_to_volunteer',
+        'courses_completed',
         'password',
     ];
 
@@ -125,8 +134,7 @@ class User extends Authenticatable
             return false;
         }
 
-        $startYear = (int) explode('-', (string) $this->batch_year)[0];
-        $baseAmount = $startYear >= 2018 ? 1000 : ($startYear >= 2013 ? 1500 : 2000);
+        $baseAmount = $this->getExpectedBaseAmount();
 
         foreach ($paidOrders as $order) {
             $guestDetails = is_array($order->guest_details) ? $order->guest_details : [];
@@ -197,13 +205,13 @@ class User extends Authenticatable
     /**
      * Get the expected base amount for this user's batch year
      */
-    private function getExpectedBaseAmount(): int
+    public function getExpectedBaseAmount(): int
     {
-        if (!$this->batch_year) {
-            return 0;
+        if (!$this->session) {
+            return 1000; // Default amount
         }
         
-        $startYear = (int) explode('-', (string) $this->batch_year)[0];
+        $startYear = (int) explode('-', (string) $this->session)[0];
         if ($startYear >= 2018) {
             return 1000;
         } elseif ($startYear >= 2013) {

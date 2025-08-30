@@ -15,7 +15,7 @@ class PayForGuestController extends Controller
         /** @var User $user */
         $hasPaidBase = $user->hasPaidBaseRegistration();
         if (!$hasPaidBase) {
-            return redirect()->route('pay.now')->with('error', 'Please complete base registration payment first.');
+            return redirect()->route('transaction.history')->with('error', 'Wait for admin approval before paying the base registration fee.');
         }
 
         return view('pay-for-guest', [

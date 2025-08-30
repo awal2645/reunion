@@ -40,7 +40,7 @@
                                        name="search" 
                                        id="search" 
                                        value="{{ request('search') }}"
-                                       placeholder="Search by name, email, batch year..."
+                                       placeholder="Search by name, email, session..."
                                        class="w-full pl-10 pr-4 py-3 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:ring-blue-500 transition-all duration-300">
                                 <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                     <i class="fas fa-search text-gray-400"></i>
@@ -48,19 +48,19 @@
                             </div>
                         </div>
 
-                        <!-- Batch Year Filter -->
-                        <div>
-                            <label for="batch_year" class="block text-sm font-medium text-gray-700 mb-2">Batch Year</label>
-                            <select name="batch_year" id="batch_year" 
-                                    class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:ring-blue-500 transition-all duration-300">
-                                <option value="">All Years</option>
-                                @for($year = 2025; $year >= 1990; $year--)
-                                    <option value="{{ $year }}" {{ request('batch_year') == $year ? 'selected' : '' }}>
-                                        {{ $year }}
-                                    </option>
-                                @endfor
-                            </select>
-                        </div>
+                                                  <!-- Session Filter -->
+                          <div>
+                              <label for="session" class="block text-sm font-medium text-gray-700 mb-2">Session</label>
+                              <select name="session" id="session" 
+                                      class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:ring-blue-500 transition-all duration-300">
+                                  <option value="">All Sessions</option>
+                                  @for($year = 2025; $year >= 1990; $year--)
+                                      <option value="{{ $year }}-{{ $year + 1 }}" {{ request('session') == $year . '-' . ($year + 1) ? 'selected' : '' }}>
+                                          {{ $year }}-{{ $year + 1 }}
+                                      </option>
+                                  @endfor
+                              </select>
+                          </div>
 
                         <!-- Status Filter -->
                         <div>
@@ -109,7 +109,7 @@
                                     User Info
                                 </th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Batch & Contact
+                                    Session & Contact
                                 </th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     Professional Info
@@ -148,9 +148,9 @@
                                     </div>
                                 </td>
                                 <td class="px-6 py-4">
-                                    <div class="text-sm text-gray-900">
-                                        <div class="font-medium">Batch: {{ $user->batch_year }}</div>
-                                        <div class="text-gray-500">{{ $user->contact_number }}</div>
+                                                                <div class="text-sm text-gray-900">
+                                <div class="font-medium">Session: {{ $user->session ?? 'Not specified' }}</div>
+                                <div class="text-gray-500">{{ $user->contact_number }}</div>
                                         @if($user->whatsapp_number)
                                             <div class="text-gray-500">WhatsApp: {{ $user->whatsapp_number }}</div>
                                         @endif

@@ -21,10 +21,10 @@
                         @endif
                         <div>
                             <h1 class="text-3xl font-bold text-gray-900 mb-1">Welcome back, {{ Auth::user()->full_name }}!</h1>
-                            <p class="text-gray-600 flex items-center gap-2">
-                                <i class="fas fa-graduation-cap text-blue-500"></i>
-                                Batch Year: <span class="font-semibold text-blue-700">{{ Auth::user()->batch_year ?? 'Not specified' }}</span>
-                            </p>
+                                                    <p class="text-gray-600 flex items-center gap-2">
+                            <i class="fas fa-graduation-cap text-blue-500"></i>
+                            Session: <span class="font-semibold text-blue-700">{{ Auth::user()->session ?? 'Not specified' }}</span>
+                        </p>
                         </div>
                     </div>
                     <div class="hidden md:block">
@@ -85,27 +85,7 @@
                 
                 <div class="p-8">
                     @php
-                        $batchYear = Auth::user()->batch_year;
-                        function getPaymentAmount($batchYear) {
-                            $ranges = [
-                                ['start' => '2018-2019', 'end' => '2024-2025', 'amount' => 1000],
-                                ['start' => '2013-2014', 'end' => '2017-2018', 'amount' => 1500],
-                                ['start' => null, 'end' => '2012-2013', 'amount' => 2000],
-                            ];
-                            foreach ($ranges as $range) {
-                                if ($range['start'] && $range['end']) {
-                                    if (strcmp($batchYear, $range['start']) >= 0 && strcmp($batchYear, $range['end']) <= 0) {
-                                        return $range['amount'];
-                                    }
-                                } elseif ($range['end']) {
-                                    if (strcmp($batchYear, $range['end']) <= 0) {
-                                        return $range['amount'];
-                                    }
-                                }
-                            }
-                            return 2000; // fallback
-                        }
-                        $paymentAmount = getPaymentAmount($batchYear);
+                        $paymentAmount = Auth::user()->getExpectedBaseAmount();
                     @endphp
 
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -118,9 +98,6 @@
                                 </div>
                             </div>
                             <div class="text-3xl font-bold text-blue-700 mb-2">৳{{ number_format($paymentAmount) }}</div>
-                            <div class="text-sm text-blue-600">
-                                Based on your batch year: <span class="font-semibold">{{ $batchYear ?? 'Not specified' }}</span>
-                            </div>
                         </div>
 
                         <!-- Payment Rules -->

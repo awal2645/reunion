@@ -8,9 +8,13 @@ use App\Models\Order;
 
 class PayNowController extends Controller
 {
-    private function getPaymentAmount($batchYear)
+    private function getPaymentAmount($session)
     {
-        $startYear = (int) explode('-', $batchYear)[0];
+        if (!$session) {
+            return 1000; // Default amount
+        }
+        
+        $startYear = (int) explode('-', $session)[0];
         if ($startYear >= 2018) {
             return 1000;
         } elseif ($startYear >= 2013) {
@@ -23,7 +27,7 @@ class PayNowController extends Controller
     public function show(Request $request)
     {
         $user = Auth::user();
-        $amount = $this->getPaymentAmount($user->batch_year);
+        $amount = $this->getPaymentAmount($user->session);
         $withGuest = $request->query('guest', false);
         return view('pay-now', [
             'amount' => $amount,
@@ -34,7 +38,7 @@ class PayNowController extends Controller
     public function submit(Request $request)
     {
         $user = Auth::user();
-        $amount = $this->getPaymentAmount($user->batch_year);
+        $amount = $this->getPaymentAmount($user->session);
 
         $validated = $request->validate([
             'trxid' => 'required|string|max:255|unique:orders,trxid',

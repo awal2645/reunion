@@ -1,5 +1,13 @@
 @extends('layouts.app')
 @section('content')
+@if($errors->any())
+    @foreach($errors->all() as $error)
+        <div class="alert alert-danger">
+            {{ $error }}
+        </div>
+    @endforeach
+@endif
+
 <div class="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-100 py-20 px-4 sm:px-6 lg:px-8">
     <!-- Full-width Event Banner -->
     <div class="mb-10">
@@ -74,28 +82,43 @@
                             <x-input-error :messages="$errors->get('blood_group')" class="mt-2" />
                         </div>
 
-                        <!-- Session and Batch Year -->
+                        <!-- Session -->
                         <div>
                             <label for="session" class="block text-sm font-semibold text-gray-700 mb-2">
                                 <i class="fas fa-calendar text-blue-500 mr-2"></i>Session
                             </label>
-                            <input id="session" name="session" type="text" 
-                                class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:ring-blue-500 transition-all duration-300" 
-                                value="{{ old('session') }}" required 
-                                placeholder="e.g., 2015-2016" />
+                            <select id="session" name="session" 
+                                class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:ring-blue-500 transition-all duration-300" required>
+                                <option value="">Select Session</option>
+                                @for($year = 1887; $year <= 2024; $year++)
+                                    <option value="{{ $year }}-{{ $year + 1 }}" {{ old('session') == $year . '-' . ($year + 1) ? 'selected' : '' }}>
+                                        {{ $year }}-{{ $year + 1 }}
+                                    </option>
+                                @endfor
+                            </select>
+                            <p class="mt-1 text-xs text-red-500">
+                                <i class="fas fa-info-circle text-red-500 mr-1"></i>
+                                BSc Hons session is required
+                            </p>
                             <x-input-error :messages="$errors->get('session')" class="mt-2" />
                         </div>
 
+                        <!-- Course Completion -->
                         <div>
-                            <label for="batch_year" class="block text-sm font-semibold text-gray-700 mb-2">
-                                <i class="fas fa-graduation-cap text-blue-500 mr-2"></i>Batch/Passing Year
+                            <label for="courses_completed" class="block text-sm font-semibold text-gray-700 mb-2">
+                                <i class="fas fa-graduation-cap text-blue-500 mr-2"></i>Which courses did you complete at Rajshahi College?
                             </label>
-                            <input id="batch_year" name="batch_year" type="text" 
-                                class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:ring-blue-500 transition-all duration-300" 
-                                value="{{ old('batch_year') }}" required 
-                                placeholder="e.g., 2016" />
-                            <x-input-error :messages="$errors->get('batch_year')" class="mt-2" />
+                            <select id="courses_completed" name="courses_completed" 
+                                class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:ring-blue-500 transition-all duration-300">
+                                <option value="">Select Course</option>
+                                <option value="bsc" {{ old('courses_completed') == 'bsc' ? 'selected' : '' }}>BSc</option>
+                                <option value="msc" {{ old('courses_completed') == 'msc' ? 'selected' : '' }}>MSc</option>
+                                <option value="both" {{ old('courses_completed') == 'both' ? 'selected' : '' }}>Both BSc and MSc</option>
+                            </select>
+                            <x-input-error :messages="$errors->get('courses_completed')" class="mt-2" />
                         </div>
+
+
 
                         <!-- Contact Numbers -->
                         <div>
@@ -164,24 +187,48 @@
                     </div>
                     
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                        <div class="lg:col-span-2">
-                            <label for="present_address" class="block text-sm font-semibold text-gray-700 mb-2">
-                                <i class="fas fa-map-marker-alt text-red-500 mr-2"></i>Present Address
+                        <div>
+                            <label for="present_vill" class="block text-sm font-semibold text-gray-700 mb-2">
+                                <i class="fas fa-home text-red-500 mr-2"></i>Vill/Area
                             </label>
-                            <textarea id="present_address" name="present_address" rows="3" 
+                            <input id="present_vill" name="present_vill" type="text" 
                                 class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:ring-blue-500 transition-all duration-300" 
-                                required placeholder="Enter your current address">{{ old('present_address') }}</textarea>
-                            <x-input-error :messages="$errors->get('present_address')" class="mt-2" />
+                                value="{{ old('present_vill') }}" required 
+                                placeholder="Enter your village/area" />
+                            <x-input-error :messages="$errors->get('present_vill')" class="mt-2" />
                         </div>
 
-                        <div class="lg:col-span-2">
-                            <label for="permanent_address" class="block text-sm font-semibold text-gray-700 mb-2">
-                                <i class="fas fa-home text-blue-500 mr-2"></i>Permanent Address
+                        <div>
+                            <label for="present_post_office" class="block text-sm font-semibold text-gray-700 mb-2">
+                                <i class="fas fa-mailbox text-blue-500 mr-2"></i>Post Office
                             </label>
-                            <textarea id="permanent_address" name="permanent_address" rows="3" 
+                            <input id="present_post_office" name="present_post_office" type="text" 
                                 class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:ring-blue-500 transition-all duration-300" 
-                                required placeholder="Enter your permanent address">{{ old('permanent_address') }}</textarea>
-                            <x-input-error :messages="$errors->get('permanent_address')" class="mt-2" />
+                                value="{{ old('present_post_office') }}" required 
+                                placeholder="Enter post office" />
+                            <x-input-error :messages="$errors->get('present_post_office')" class="mt-2" />
+                        </div>
+
+                        <div>
+                            <label for="present_thana" class="block text-sm font-semibold text-gray-700 mb-2">
+                                <i class="fas fa-map-marker-alt text-green-500 mr-2"></i>Thana/Upazila
+                            </label>
+                            <input id="present_thana" name="present_thana" type="text" 
+                                class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:ring-blue-500 transition-all duration-300" 
+                                value="{{ old('present_thana') }}" required 
+                                placeholder="Enter thana/upazila" />
+                            <x-input-error :messages="$errors->get('present_thana')" class="mt-2" />
+                        </div>
+
+                        <div>
+                            <label for="present_district" class="block text-sm font-semibold text-gray-700 mb-2">
+                                <i class="fas fa-city text-purple-500 mr-2"></i>District
+                            </label>
+                            <input id="present_district" name="present_district" type="text" 
+                                class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:ring-blue-500 transition-all duration-300" 
+                                value="{{ old('present_district') }}" required 
+                                placeholder="Enter district" />
+                            <x-input-error :messages="$errors->get('present_district')" class="mt-2" />
                         </div>
 
                         <div>
@@ -208,10 +255,85 @@
                     </div>
                 </div>
 
+                <!-- Permanent Address Details -->
+                <div class="mb-8">
+                    <div class="flex items-center justify-between mb-6">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-full bg-gradient-to-br from-indigo-600 to-indigo-700 flex items-center justify-center text-white font-bold">3</div>
+                            <h2 class="text-2xl font-bold text-gray-900">Permanent Address Details</h2>
+                        </div>
+                        
+                        <!-- Copy Address Button and Checkbox -->
+                        <div class="flex items-center gap-4">
+                            <button type="button " onclick="copyCurrentAddress()"  
+                                    class="inline-flex  hidden items-center gap-2 bg-gradient-to-r from-indigo-600 to-indigo-700 text-white px-4 py-2 rounded-xl font-semibold shadow-lg hover:from-indigo-700 hover:to-indigo-800 transform hover:scale-105 transition-all duration-300">
+                                <i class="fas fa-copy mr-1"></i>
+                                Copy Current Address
+                            </button>
+                            
+                            <label for="same_as_current" class="inline-flex items-center p-3 bg-indigo-50 rounded-xl hover:bg-indigo-100 transition-colors cursor-pointer border border-indigo-200">
+                                <input id="same_as_current" type="checkbox" name="same_as_current" value="1" 
+                                       class="rounded border-indigo-300 text-indigo-600 shadow-sm focus:ring-indigo-500" 
+                                       onchange="toggleAddressSync()">
+                                <span class="ml-3 text-indigo-700 font-medium text-sm">
+                                    <i class="fas fa-link text-indigo-500 mr-2"></i>
+                                    Same as Current Address
+                                </span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        <div>
+                            <label for="permanent_vill" class="block text-sm font-semibold text-gray-700 mb-2">
+                                <i class="fas fa-home text-red-500 mr-2"></i>Vill/Area
+                            </label>
+                            <input id="permanent_vill" name="permanent_vill" type="text" 
+                                class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:ring-blue-500 transition-all duration-300" 
+                                value="{{ old('permanent_vill') }}" required 
+                                placeholder="Enter your village/area" />
+                            <x-input-error :messages="$errors->get('permanent_vill')" class="mt-2" />
+                        </div>
+
+                        <div>
+                            <label for="permanent_post_office" class="block text-sm font-semibold text-gray-700 mb-2">
+                                <i class="fas fa-mailbox text-blue-500 mr-2"></i>Post Office
+                            </label>
+                            <input id="permanent_post_office" name="permanent_post_office" type="text" 
+                                class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:ring-blue-500 transition-all duration-300" 
+                                value="{{ old('permanent_post_office') }}" required 
+                                placeholder="Enter post office" />
+                            <x-input-error :messages="$errors->get('permanent_post_office')" class="mt-2" />
+                        </div>
+
+                        <div>
+                            <label for="permanent_thana" class="block text-sm font-semibold text-gray-700 mb-2">
+                                <i class="fas fa-map-marker-alt text-green-500 mr-2"></i>Thana/Upazila
+                            </label>
+                            <input id="permanent_thana" name="permanent_thana" type="text" 
+                                class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:ring-blue-500 transition-all duration-300" 
+                                value="{{ old('permanent_thana') }}" required 
+                                placeholder="Enter thana/upazila" />
+                            <x-input-error :messages="$errors->get('permanent_thana')" class="mt-2" />
+                        </div>
+
+                        <div>
+                            <label for="permanent_district" class="block text-sm font-semibold text-gray-700 mb-2">
+                                <i class="fas fa-city text-purple-500 mr-2"></i>District
+                            </label>
+                            <input id="permanent_district" name="permanent_district" type="text" 
+                                class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:ring-blue-500 transition-all duration-300" 
+                                value="{{ old('permanent_district') }}" required 
+                                placeholder="Enter district" />
+                            <x-input-error :messages="$errors->get('permanent_district')" class="mt-2" />
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Professional Information -->
                 <div class="mb-8">
                     <div class="flex items-center gap-3 mb-6">
-                        <div class="w-10 h-10 rounded-full bg-gradient-to-br from-purple-600 to-purple-700 flex items-center justify-center text-white font-bold">3</div>
+                        <div class="w-10 h-10 rounded-full bg-gradient-to-br from-purple-600 to-purple-700 flex items-center justify-center text-white font-bold">4</div>
                         <h2 class="text-2xl font-bold text-gray-900">Professional Information</h2>
                     </div>
                     
@@ -265,7 +387,7 @@
                 <!-- Additional Information -->
                 <div class="mb-8">
                     <div class="flex items-center gap-3 mb-6">
-                        <div class="w-10 h-10 rounded-full bg-gradient-to-br from-orange-600 to-orange-700 flex items-center justify-center text-white font-bold">4</div>
+                        <div class="w-10 h-10 rounded-full bg-gradient-to-br from-orange-600 to-orange-700 flex items-center justify-center text-white font-bold">5</div>
                         <h2 class="text-2xl font-bold text-gray-900">Additional Information</h2>
                     </div>
                     
@@ -287,7 +409,7 @@
                                         </label>
                                         <p class="pl-1">or drag and drop</p>
                                     </div>
-                                    <p class="text-xs text-gray-500">PNG, JPG, GIF up to 2MB</p>
+                                    <p class="text-xs text-gray-500">PNG, JPG, GIF up to 4MB</p>
                                 </div>
                             </div>
                             <x-input-error :messages="$errors->get('photo')" class="mt-2" />
@@ -361,7 +483,7 @@
                 <!-- Account Security -->
                 <div class="mb-8">
                     <div class="flex items-center gap-3 mb-6">
-                        <div class="w-10 h-10 rounded-full bg-gradient-to-br from-red-600 to-red-700 flex items-center justify-center text-white font-bold">5</div>
+                        <div class="w-10 h-10 rounded-full bg-gradient-to-br from-red-600 to-red-700 flex items-center justify-center text-white font-bold">6</div>
                         <h2 class="text-2xl font-bold text-gray-900">Account Security</h2>
                     </div>
                     
@@ -492,9 +614,9 @@
                         return;
                     }
 
-                    // Validate file size (2MB)
-                    if (file.size > 2 * 1024 * 1024) {
-                        alert('Image size should be less than 2MB');
+                    // Validate file size (4MB)
+                    if (file.size > 4 * 1024 * 1024) {
+                        alert('Image size should be less than 4MB');
                         this.value = '';
                         return;
                     }
@@ -556,6 +678,88 @@
                 input.type = 'password';
                 eyeIcon.classList.remove('fa-eye-slash');
                 eyeIcon.classList.add('fa-eye');
+            }
+        }
+
+        // Copy current address to permanent address
+        function copyCurrentAddress() {
+            const currentVill = document.getElementById('present_vill').value;
+            const currentPostOffice = document.getElementById('present_post_office').value;
+            const currentThana = document.getElementById('present_thana').value;
+            const currentDistrict = document.getElementById('present_district').value;
+            
+            if (!currentVill || !currentPostOffice || !currentThana || !currentDistrict) {
+                alert('Please fill in all current address fields first before copying.');
+                return;
+            }
+            
+            document.getElementById('permanent_vill').value = currentVill;
+            document.getElementById('permanent_post_office').value = currentPostOffice;
+            document.getElementById('permanent_thana').value = currentThana;
+            document.getElementById('permanent_district').value = currentDistrict;
+            
+            // Show success message
+            Swal.fire({
+                toast: true,
+                position: 'top-end',
+                icon: 'success',
+                title: 'Address copied successfully!',
+                showConfirmButton: false,
+                timer: 2000,
+                timerProgressBar: true
+            });
+        }
+
+        // Toggle address synchronization
+        function toggleAddressSync() {
+            const sameAsCurrent = document.getElementById('same_as_current');
+            const permanentFields = [
+                'permanent_vill',
+                'permanent_post_office', 
+                'permanent_thana',
+                'permanent_district'
+            ];
+            
+            if (sameAsCurrent.checked) {
+                // Enable auto-sync
+                permanentFields.forEach(fieldId => {
+                    const field = document.getElementById(fieldId);
+                    field.addEventListener('input', syncAddressFields);
+                    field.addEventListener('change', syncAddressFields);
+                });
+                
+                // Copy current values
+                copyCurrentAddress();
+                
+                // Disable permanent address fields
+                permanentFields.forEach(fieldId => {
+                    const field = document.getElementById(fieldId);
+                    field.disabled = true;
+                    field.classList.add('bg-gray-100', 'cursor-not-allowed');
+                });
+                
+            } else {
+                // Disable auto-sync
+                permanentFields.forEach(fieldId => {
+                    const field = document.getElementById(fieldId);
+                    field.removeEventListener('input', syncAddressFields);
+                    field.removeEventListener('change', syncAddressFields);
+                });
+                
+                // Enable permanent address fields
+                permanentFields.forEach(fieldId => {
+                    const field = document.getElementById(fieldId);
+                    field.disabled = false;
+                    field.classList.remove('bg-gray-100', 'cursor-not-allowed');
+                });
+            }
+        }
+
+        // Sync address fields when current address changes
+        function syncAddressFields() {
+            const sameAsCurrent = document.getElementById('same_as_current');
+            if (sameAsCurrent.checked) {
+                copyCurrentAddress();
             }
         }
     </script>

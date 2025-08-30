@@ -9,9 +9,13 @@ use App\Models\User;
 
 class PayWithGuestController extends Controller
 {
-    private function getPaymentAmount($batchYear)
+    private function getPaymentAmount($session)
     {
-        $startYear = (int) explode('-', $batchYear)[0];
+        if (!$session) {
+            return 1000; // Default amount
+        }
+        
+        $startYear = (int) explode('-', $session)[0];
         if ($startYear >= 2018) {
             return 1000;
         } elseif ($startYear >= 2013) {
@@ -26,7 +30,7 @@ class PayWithGuestController extends Controller
         $user = Auth::user();
         /** @var User $user */
         $hasPaidBase = $user->hasPaidBaseRegistration();
-        $baseAmount = $hasPaidBase ? 0 : $this->getPaymentAmount($user->batch_year);
+        $baseAmount = $hasPaidBase ? 0 : $this->getPaymentAmount($user->session);
         return view('pay-with-guest', [
             'amount' => $baseAmount,
             'hasPaidBase' => $hasPaidBase,
@@ -38,7 +42,7 @@ class PayWithGuestController extends Controller
         $user = Auth::user();
         /** @var User $user */
         $hasPaidBase = $user->hasPaidBaseRegistration();
-        $baseAmount = $hasPaidBase ? 0 : $this->getPaymentAmount($user->batch_year);
+        $baseAmount = $hasPaidBase ? 0 : $this->getPaymentAmount($user->session);
         $validated = $request->validate([
             'trxid' => 'required|string|max:255|unique:orders,trxid',
             'amount' => 'required|integer',

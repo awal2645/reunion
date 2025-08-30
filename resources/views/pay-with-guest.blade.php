@@ -72,9 +72,9 @@
                                 </div>
                             </div>
                             <div class="text-2xl sm:text-3xl font-bold text-green-700 mb-2" id="amountDisplay">৳{{ number_format($amount) }}</div>
-                            <div class="text-xs sm:text-sm text-green-600">
-                                Base amount for your batch year: <span class="font-semibold">{{ Auth::user()->batch_year ?? 'Not specified' }}</span>
-                            </div>
+                                                          <div class="text-xs sm:text-sm text-green-600">
+                                  Base amount for your session: <span class="font-semibold">{{ Auth::user()->session ?? 'Not specified' }}</span>
+                              </div>
                         </div>
                     </div>
 

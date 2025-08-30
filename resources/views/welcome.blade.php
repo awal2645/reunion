@@ -280,22 +280,10 @@
             <div class="bg-gradient-to-br from-blue-100 to-blue-200 rounded-2xl p-8 shadow-lg border-t-4 border-blue-700 hover:shadow-xl transition">
               <h3 class="text-2xl font-bold text-blue-900 mb-6">What's Included</h3>
               <ul class="space-y-4 text-blue-700 text-base">
+            
                 <li class="flex items-center gap-3">
                   <img src="https://cdn-icons-png.flaticon.com/512/1046/1046784.png" class="w-6 h-6" alt="Check Icon" />
-                  Welcome cocktail reception
-                </li>
-                <li class="flex items-center gap-3">
-                  <img src="https://cdn-icons-png.flaticon.com/512/1046/1046784.png" class="w-6 h-6" alt="Check Icon" />
-                  Three-course dinner
-                </li>
-                <li class="flex items-center gap-3">
-                  <img src="https://cdn-icons-png.flaticon.com/512/1046/1046784.png" class="w-6 h-6" alt="Check Icon" />
-                  Open bar all evening
-                </li>
-                <li class="flex items-center gap-3">
-                  <img src="https://cdn-icons-png.flaticon.com/512/1046/1046784.png" class="w-6 h-6" alt="Check Icon" />
-                  Live entertainment & DJ
-                </li>
+                  Live entertainment 
                 <li class="flex items-center gap-3">
                   <img src="https://cdn-icons-png.flaticon.com/512/1046/1046784.png" class="w-6 h-6" alt="Check Icon" />
                   Memory lane photo exhibition

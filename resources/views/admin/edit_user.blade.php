@@ -97,23 +97,14 @@
                         
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div>
-                                <label for="session" class="block text-sm font-medium text-gray-700 mb-2">Session *</label>
+                                <label for="session" class="block text-sm font-medium text-gray-700 mb-2">Session</label>
                                 <input type="text" name="session" id="session" value="{{ old('session', $user->session) }}"
                                        class="block w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
                                        placeholder="Enter session">
                             </div>
 
                             <div>
-                                <label for="batch_year" class="block text-sm font-medium text-gray-700 mb-2">Batch Year *</label>
-                                <select name="batch_year" id="batch_year" 
-                                        class="block w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200">
-                                    <option value="">Select Batch Year</option>
-                                    @for($year = 2025; $year >= 1990; $year--)
-                                        <option value="{{ $year }}" {{ $user->batch_year == $year ? 'selected' : '' }}>
-                                            {{ $year }}
-                                        </option>
-                                    @endfor
-                                </select>
+
                             </div>
                         </div>
                     </div>

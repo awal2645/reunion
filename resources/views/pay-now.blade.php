@@ -40,9 +40,9 @@
                                 </div>
                             </div>
                             <div class="text-3xl font-bold text-blue-700 mb-2">৳{{ number_format($amount) }}</div>
-                            <div class="text-sm text-blue-600">
-                                Based on your batch year: <span class="font-semibold">{{ Auth::user()->batch_year ?? 'Not specified' }}</span>
-                            </div>
+                                                          <div class="text-sm text-blue-600">
+                                  Based on your session: <span class="font-semibold">{{ Auth::user()->session ?? 'Not specified' }}</span>
+                              </div>
                         </div>
                     </div>
 

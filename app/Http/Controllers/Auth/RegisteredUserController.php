@@ -35,24 +35,25 @@ class RegisteredUserController extends Controller
             'full_name' => ['required', 'string', 'max:255'],
             'nickname' => ['nullable', 'string', 'max:255'],
             'blood_group' => ['nullable', 'string', 'max:10'],
-            'session' => ['required', 'string', 'max:255'],
-            'batch_year' => ['required', 'string', 'max:255'],
+            'session' => ['nullable', 'string', 'max:255'],
+
             'contact_number' => ['required', 'string', 'max:255','unique:users,contact_number'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:'.User::class],
             'facebook_profile' => ['nullable', 'string', 'url', 'max:255'],
             'whatsapp_number' => ['nullable', 'string', 'max:255'],
-            'present_address' => ['required', 'string'],
-            'permanent_address' => ['required', 'string'],
+            'present_address' => ['nullable', 'string'],
+            'permanent_address' => ['nullable', 'string'],
             'country_of_residence' => ['required', 'string', 'max:255'],
             'city_of_residence' => ['required', 'string', 'max:255'],
-            'occupation' => ['required', 'string', 'max:255'],
+            'occupation' => ['nullable', 'string', 'max:255'],
             'organization_name' => ['nullable', 'string', 'max:255'],
             'designation' => ['nullable', 'string', 'max:255'],
             'work_location' => ['nullable', 'string', 'max:255'],
-            'photo' => ['required', 'image', 'max:2048'], // Max 2MB
+            'photo' => ['required', 'image', 'max:4048'], // Max 4MB
             'favorite_memory' => ['nullable', 'string'],
             'accompanying_guests' => ['nullable', 'integer', 'min:0'],
             'tshirt_size' => ['required', 'string', 'in:XS,S,M,L,XL,XXL,XXXL'],
+            'courses_completed' => ['nullable', 'string', 'in:bsc,msc,both'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
@@ -76,7 +77,7 @@ class RegisteredUserController extends Controller
             'nickname' => $request->nickname,
             'blood_group' => $request->blood_group,
             'session' => $request->session,
-            'batch_year' => $request->batch_year,
+
             'contact_number' => $request->contact_number,
             'email' => $request->email,
             'facebook_profile' => $request->facebook_profile,
@@ -97,6 +98,7 @@ class RegisteredUserController extends Controller
             'accompanying_guests' => $request->accompanying_guests ?? 0,
             'tshirt_size' => $request->tshirt_size,
             'willing_to_volunteer' => $request->willing_to_volunteer ?? false,
+            'courses_completed' => $request->courses_completed,
             'password' => Hash::make($request->password),
         ]);
 

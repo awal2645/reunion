@@ -36,10 +36,10 @@
                 <span class="font-medium text-gray-700">Session:</span>
                 <span class="text-gray-900">{{ $user->session }}</span>
             </div>
-            <div>
-                <span class="font-medium text-gray-700">Batch Year:</span>
-                <span class="text-gray-900">{{ $user->batch_year }}</span>
-            </div>
+                          <div>
+                  <span class="font-medium text-gray-700">Session:</span>
+                  <span class="text-gray-900">{{ $user->session ?? 'Not specified' }}</span>
+              </div>
             <div>
                 <span class="font-medium text-gray-700">WhatsApp:</span>
                 <span class="text-gray-900">{{ $user->whatsapp_number ?? 'Not provided' }}</span>
