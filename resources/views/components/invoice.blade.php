@@ -121,7 +121,7 @@
                         }
                         }
                         $chargeableGuests = collect($allGuests)->filter(function($g){ return isset($g['age']) &&
-                        (int)$g['age'] > 1; })->count();
+                        (int)$g['age'] > 5; })->count();
 
                         // Calculate guest fees from existing order data
                         $guestUnitPrice = 1000; // Guest fee per person
@@ -215,7 +215,7 @@
                         </div>
                         <div class="flex justify-between text-xs">
                             <span class="font-medium text-gray-600">Emergency Contact:</span>
-                            <span class="text-gray-800">+88017xxxxxxx</span>
+                            <a href="tel:+8801577281779" class="text-gray-800">+8801577281779</a>
                         </div>
                         <div class="flex justify-between text-xs">
                             <span class="font-medium text-gray-600">Registration Date:</span>
@@ -256,7 +256,7 @@
         <div class="bg-gradient-to-r from-green-600 to-green-700 text-white px-6 py-3">
             <div class="text-center">
                 <div class="text-base font-bold mb-1">Department of Statistics Reunion- 2026</div>
-                <div class="text-xs opacity-90">Rajshahi College, Rajshahi- 6100, Emergency Contact: 017xxxxxxx</div>
+                <div class="text-xs opacity-90">Rajshahi College, Rajshahi- 6100, Emergency Contact: +8801577281779</div>
                 <div class="text-xs opacity-90 mt-1">https://rcstatreunion.com/</div>
             </div>
         </div>
@@ -490,7 +490,7 @@
                         </div>
                         <div class="flex justify-between">
                             <span class="font-semibold text-gray-700">Emergency Contact:</span>
-                            <span class="text-gray-900">+88017xxxxxxx</span>
+                            <span class="text-gray-900">+8801577281779</span>
                         </div>
                         <div class="flex justify-between">
                             <span class="font-semibold text-gray-700">Registration Date:</span>
@@ -531,7 +531,7 @@
         <div class="bg-gradient-to-r from-green-600 to-green-700 text-white px-6 py-3">
             <div class="text-center">
                 <div class="text-base font-bold mb-1">Department of Statistics Reunion- 2026</div>
-                <div class="text-xs opacity-90">Rajshahi College, Rajshahi- 6100, Emergency Contact: 017xxxxxxx</div>
+                <div class="text-xs opacity-90">Rajshahi College, Rajshahi- 6100, Emergency Contact: +8801577281779</div>
                 <div class="text-xs opacity-90 mt-1">https://rcstatreunion.com/</div>
             </div>
         </div>
