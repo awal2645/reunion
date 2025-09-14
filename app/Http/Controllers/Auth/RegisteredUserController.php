@@ -55,11 +55,14 @@ class RegisteredUserController extends Controller
             'tshirt_size' => ['required', 'string', 'in:XS,S,M,L,XL,XXL,XXXL'],
             'courses_completed' => ['nullable', 'string', 'in:bsc,msc,both'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'g-recaptcha-response' => ['required'],
         ]);
 
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         }
+
+      
         // Handle photo upload
         $photoPath = null;
         if ($request->hasFile('photo')) {

@@ -522,6 +522,14 @@
             <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
                         </div>
                     </div>
+                    
+                    <!-- reCAPTCHA -->
+                    <div class="mt-6">
+                        <div class="g-recaptcha" data-sitekey="{{ env('SITE_KEY') }}"></div>
+                        @if($errors->has('g-recaptcha-response'))
+                            <div class="text-red-500 text-sm mt-2">{{ $errors->first('g-recaptcha-response') }}</div>
+                        @endif
+                    </div>
                 </div>
 
                 <!-- Form Actions -->
@@ -763,4 +771,7 @@
             }
         }
     </script>
+
+    <!-- reCAPTCHA Script -->
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 @endsection

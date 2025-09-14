@@ -75,6 +75,10 @@
                             </button>
                         </div>
                         <x-input-error :messages="$errors->get('password')" class="mt-2" />
+                        <div class="g-recaptcha mt-2" data-sitekey="{{ env('SITE_KEY') }}"></div>
+                        @if($errors->has('g-recaptcha-response'))
+                            <div class="text-red-500 text-sm mt-2">{{ $errors->first('g-recaptcha-response') }}</div>
+                        @endif
                     </div>
 
                     <!-- Remember Me & Forgot Password -->
@@ -141,6 +145,7 @@
         </div>
     </div>
 </div>
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
