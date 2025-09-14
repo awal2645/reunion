@@ -283,7 +283,8 @@
             
                 <li class="flex items-center gap-3">
                   <img src="https://cdn-icons-png.flaticon.com/512/1046/1046784.png" class="w-6 h-6" alt="Check Icon" />
-                  Live entertainment 
+                  Live entertainment
+                </li>
                 <li class="flex items-center gap-3">
                   <img src="https://cdn-icons-png.flaticon.com/512/1046/1046784.png" class="w-6 h-6" alt="Check Icon" />
                   Memory lane photo exhibition
