@@ -70,7 +70,7 @@
                                 </div>
                                 <div>
                                     <div class="text-xs sm:text-sm text-gray-600 mb-1">Branch</div>
-                                    <div class="font-semibold text-gray-900 text-sm sm:text-base">Rajshahi</div>
+                                    <div class="font-semibold text-gray-900 text-sm sm:text-base">DELUABARI (RURAL) BRANCH</div>
                                 </div>
                                 <div class="sm:col-span-2">
                                     <div class="text-xs sm:text-sm text-gray-600 mb-1">Account Name</div>

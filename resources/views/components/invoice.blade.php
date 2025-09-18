@@ -121,7 +121,7 @@
                         }
                         }
                         $chargeableGuests = collect($allGuests)->filter(function($g){ return isset($g['age']) &&
-                        (int)$g['age'] > 5; })->count();
+                        (int)$g['age'] >= 6; })->count();
 
                         // Calculate guest fees from existing order data
                         $guestUnitPrice = 1000; // Guest fee per person
@@ -397,7 +397,7 @@
                         @php
                         $guestDetails = is_array($order->guest_details) ? $order->guest_details : [];
                         $chargeableGuests = collect($guestDetails)->filter(function($g){
-                        return isset($g['age']) && (int)$g['age'] > 1;
+                        return isset($g['age']) && (int)$g['age'] >= 6;
                         })->count();
 
                         // Calculate guest fees from existing order data
