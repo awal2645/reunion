@@ -590,9 +590,24 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            alert('DEBUG: DOM Content Loaded - Starting image preview setup');
+            
             // Image Preview Handler
             const photoInput = document.getElementById('photo');
+            alert('DEBUG: Photo input element found: ' + (photoInput ? 'YES' : 'NO'));
+            
+            if (!photoInput) {
+                alert('DEBUG: ERROR - Photo input element not found! Stopping execution.');
+                return;
+            }
+            
             const uploadContainer = photoInput.closest('.border-dashed');
+            alert('DEBUG: Upload container found: ' + (uploadContainer ? 'YES' : 'NO'));
+            
+            if (!uploadContainer) {
+                alert('DEBUG: ERROR - Upload container not found! Stopping execution.');
+                return;
+            }
             
             // Create and append preview elements
             const previewContainer = document.createElement('div');
@@ -604,18 +619,29 @@
                 </button>
             `;
             uploadContainer.parentNode.insertBefore(previewContainer, uploadContainer.nextSibling);
+            alert('DEBUG: Preview container created and inserted');
 
             const previewImg = document.getElementById('preview-img');
             const removeButton = document.getElementById('remove-image');
             const uploadIcon = uploadContainer.querySelector('svg');
             const uploadText = uploadContainer.querySelector('label span');
+            
+            alert('DEBUG: Elements found - previewImg: ' + (previewImg ? 'YES' : 'NO') + 
+                  ', removeButton: ' + (removeButton ? 'YES' : 'NO') + 
+                  ', uploadText: ' + (uploadText ? 'YES' : 'NO'));
 
             // Handle file selection
             photoInput.addEventListener('change', function() {
+                alert('DEBUG: File input change event triggered');
+                
                 const file = this.files[0];
+                alert('DEBUG: File selected: ' + (file ? file.name + ' (Size: ' + file.size + ' bytes, Type: ' + file.type + ')' : 'NO FILE'));
+                
                 if (file) {
                     // Validate file type
                     const validTypes = ['image/jpeg', 'image/png', 'image/gif'];
+                    alert('DEBUG: Validating file type: ' + file.type);
+                    
                     if (!validTypes.includes(file.type)) {
                         alert('Please select a valid image file (PNG, JPG, or GIF)');
                         this.value = '';
@@ -623,52 +649,81 @@
                     }
 
                     // Validate file size (4MB)
+                    alert('DEBUG: Validating file size: ' + file.size + ' bytes');
                     if (file.size > 4 * 1024 * 1024) {
                         alert('Image size should be less than 4MB');
                         this.value = '';
                         return;
                     }
 
+                    alert('DEBUG: File validation passed, creating FileReader');
+                    
                     // Show preview
                     const reader = new FileReader();
                     reader.onload = function(e) {
+                        alert('DEBUG: FileReader onload triggered');
+                        alert('DEBUG: Setting preview image src, length: ' + e.target.result.length);
+                        
                         previewImg.src = e.target.result;
                         previewContainer.classList.remove('hidden');
                         uploadContainer.classList.add('opacity-50');
-                        uploadText.textContent = 'Change photo';
+                        
+                        if (uploadText) {
+                            uploadText.textContent = 'Change photo';
+                        }
+                        
+                        alert('DEBUG: Preview should now be visible');
                     };
+                    
+                    reader.onerror = function(e) {
+                        alert('DEBUG: FileReader error occurred: ' + e.target.error);
+                    };
+                    
+                    alert('DEBUG: Starting to read file as data URL');
                     reader.readAsDataURL(file);
+                } else {
+                    alert('DEBUG: No file selected');
                 }
             });
 
             // Handle remove button click
             removeButton.addEventListener('click', function() {
+                alert('DEBUG: Remove button clicked');
                 photoInput.value = '';
                 previewContainer.classList.add('hidden');
                 uploadContainer.classList.remove('opacity-50');
-                uploadText.textContent = 'Upload a file';
+                if (uploadText) {
+                    uploadText.textContent = 'Upload a file';
+                }
                 previewImg.src = '';
+                alert('DEBUG: Image preview removed');
             });
 
             // Handle drag and drop
             uploadContainer.addEventListener('dragover', function(e) {
+                alert('DEBUG: Drag over event');
                 e.preventDefault();
                 this.classList.add('border-blue-500', 'bg-blue-50');
             });
 
             uploadContainer.addEventListener('dragleave', function(e) {
+                alert('DEBUG: Drag leave event');
                 e.preventDefault();
                 this.classList.remove('border-blue-500', 'bg-blue-50');
             });
 
             uploadContainer.addEventListener('drop', function(e) {
+                alert('DEBUG: Drop event triggered');
                 e.preventDefault();
                 this.classList.remove('border-blue-500', 'bg-blue-50');
                 
                 const file = e.dataTransfer.files[0];
+                alert('DEBUG: Dropped file: ' + (file ? file.name : 'NO FILE'));
+                
                 if (file) {
                     photoInput.files = e.dataTransfer.files;
                     photoInput.dispatchEvent(new Event('change'));
+                    alert('DEBUG: Dispatched change event for dropped file');
                 }
             });
         });
