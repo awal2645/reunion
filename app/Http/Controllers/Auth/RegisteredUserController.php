@@ -49,7 +49,7 @@ class RegisteredUserController extends Controller
             'organization_name' => ['nullable', 'string', 'max:255'],
             'designation' => ['nullable', 'string', 'max:255'],
             'work_location' => ['nullable', 'string', 'max:255'],
-            'photo' => ['required', 'image', 'max:4048'], // Max 4MB
+            'photo' => ['required'], // Max 4MB
             'favorite_memory' => ['nullable', 'string'],
             'accompanying_guests' => ['nullable', 'integer', 'min:0'],
             'tshirt_size' => ['required', 'string', 'in:XS,S,M,L,XL,XXL,XXXL'],
