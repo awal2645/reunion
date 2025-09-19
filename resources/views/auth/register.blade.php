@@ -592,16 +592,7 @@
         document.addEventListener('DOMContentLoaded', function() {
             // Image Preview Handler
             const photoInput = document.getElementById('photo');
-            
-            if (!photoInput) {
-                return;
-            }
-            
             const uploadContainer = photoInput.closest('.border-dashed');
-            
-            if (!uploadContainer) {
-                return;
-            }
             
             // Create and append preview elements
             const previewContainer = document.createElement('div');
@@ -622,13 +613,9 @@
             // Handle file selection
             photoInput.addEventListener('change', function() {
                 const file = this.files[0];
-                
                 if (file) {
-                    alert('DEBUG: Image selected - ' + file.name + ' (Size: ' + (file.size/1024).toFixed(1) + ' KB)');
-                    
                     // Validate file type
                     const validTypes = ['image/jpeg', 'image/png', 'image/gif'];
-                    
                     if (!validTypes.includes(file.type)) {
                         alert('Please select a valid image file (PNG, JPG, or GIF)');
                         this.value = '';
@@ -648,18 +635,8 @@
                         previewImg.src = e.target.result;
                         previewContainer.classList.remove('hidden');
                         uploadContainer.classList.add('opacity-50');
-                        
-                        if (uploadText) {
-                            uploadText.textContent = 'Change photo';
-                        }
-                        
-                        alert('DEBUG: Image preview loaded successfully!');
+                        uploadText.textContent = 'Change photo';
                     };
-                    
-                    reader.onerror = function(e) {
-                        alert('DEBUG: Error loading image preview: ' + e.target.error);
-                    };
-                    
                     reader.readAsDataURL(file);
                 }
             });
@@ -669,11 +646,8 @@
                 photoInput.value = '';
                 previewContainer.classList.add('hidden');
                 uploadContainer.classList.remove('opacity-50');
-                if (uploadText) {
-                    uploadText.textContent = 'Upload a file';
-                }
+                uploadText.textContent = 'Upload a file';
                 previewImg.src = '';
-                alert('DEBUG: Image preview removed');
             });
 
             // Handle drag and drop
@@ -692,11 +666,9 @@
                 this.classList.remove('border-blue-500', 'bg-blue-50');
                 
                 const file = e.dataTransfer.files[0];
-                
                 if (file) {
                     photoInput.files = e.dataTransfer.files;
                     photoInput.dispatchEvent(new Event('change'));
-                    alert('DEBUG: Image dropped and uploaded - ' + file.name);
                 }
             });
         });
