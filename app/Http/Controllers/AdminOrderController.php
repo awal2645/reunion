@@ -22,7 +22,16 @@ class AdminOrderController extends Controller
 
         // Join with users for searching
         $query->join('users', 'orders.user_id', '=', 'users.id')
-            ->select('orders.*', 'users.full_name', 'users.contact_number', 'users.email');
+            ->select(
+                'orders.*',
+                'users.full_name',
+                'users.contact_number',
+                'users.email',
+                'users.session',
+                'users.courses_completed',
+                'users.accompanying_guests',
+                'users.tshirt_size'
+            );
 
         // Filtering
         if ($request->filled('status')) {

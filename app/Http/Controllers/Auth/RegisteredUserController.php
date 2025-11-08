@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Illuminate\View\View;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Http\JsonResponse;
 
 class RegisteredUserController extends Controller
 {
@@ -22,6 +23,47 @@ class RegisteredUserController extends Controller
     public function create(): View
     {
         return view('auth.register');
+    }
+
+    /**
+     * Handle AJAX photo upload during registration.
+     */
+    public function uploadPhoto(Request $request): JsonResponse
+    {
+        $validator = Validator::make($request->all(), [
+            'photo' => ['required', 'image', 'mimes:jpeg,png,jpg,gif', 'max:4096'], // Max 4MB
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => $validator->errors()->first('photo'),
+            ], 422);
+        }
+
+        try {
+            if ($request->hasFile('photo')) {
+                $photoPath = $request->file('photo')->store('profile-photos', 'public');
+                
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Photo uploaded successfully!',
+                    'photo_path' => $photoPath,
+                    'photo_url' => asset('storage/' . $photoPath),
+                ]);
+            }
+
+            return response()->json([
+                'success' => false,
+                'message' => 'No photo file found.',
+            ], 400);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to upload photo. Please try again.',
+            ], 500);
+        }
     }
 
     /**
@@ -49,7 +91,7 @@ class RegisteredUserController extends Controller
             'organization_name' => ['nullable', 'string', 'max:255'],
             'designation' => ['nullable', 'string', 'max:255'],
             'work_location' => ['nullable', 'string', 'max:255'],
-            'photo' => ['required'], // Max 4MB
+            'photo_path' => ['nullable', 'string'], // Photo path from AJAX upload
             'favorite_memory' => ['nullable', 'string'],
             'accompanying_guests' => ['nullable', 'integer', 'min:0'],
             'tshirt_size' => ['required', 'string', 'in:XS,S,M,L,XL,XXL,XXXL'],
@@ -62,12 +104,8 @@ class RegisteredUserController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
-      
-        // Handle photo upload
-        $photoPath = null;
-        if ($request->hasFile('photo')) {
-            $photoPath = $request->file('photo')->store('profile-photos', 'public');
-        }
+        // Get photo path from AJAX upload
+        $photoPath = $request->photo_path;
 
         // Ensure number_of_children is never null
         $numberOfChildren = $request->number_of_children;

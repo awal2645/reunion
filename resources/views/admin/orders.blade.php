@@ -98,14 +98,32 @@
                                 </th>
                                 <th class="px-6 py-4 text-left text-xs font-bold text-white uppercase tracking-wider">
                                     <div class="flex items-center gap-2">
+                                        <i class="fas fa-calendar-alt"></i>
+                                        Session
+                                    </div>
+                                </th>
+                                <th class="px-6 py-4 text-left text-xs font-bold text-white uppercase tracking-wider">
+                                    <div class="flex items-center gap-2">
+                                        <i class="fas fa-graduation-cap"></i>
+                                        Course Completed
+                                    </div>
+                                </th>
+                                <th class="px-6 py-4 text-left text-xs font-bold text-white uppercase tracking-wider">
+                                    <div class="flex items-center gap-2">
                                         <i class="fas fa-user"></i>
-                                        Customer
+                                        Customer Name
                                     </div>
                                 </th>
                                 <th class="px-6 py-4 text-left text-xs font-bold text-white uppercase tracking-wider">
                                     <div class="flex items-center gap-2">
                                         <i class="fas fa-phone"></i>
-                                        Contact
+                                        Phone
+                                    </div>
+                                </th>
+                                <th class="px-6 py-4 text-left text-xs font-bold text-white uppercase tracking-wider">
+                                    <div class="flex items-center gap-2">
+                                        <i class="fas fa-envelope"></i>
+                                        Email
                                     </div>
                                 </th>
                                 <th class="px-6 py-4 text-left text-xs font-bold text-white uppercase tracking-wider">
@@ -128,6 +146,30 @@
                                 </th>
                                 <th class="px-6 py-4 text-left text-xs font-bold text-white uppercase tracking-wider">
                                     <div class="flex items-center gap-2">
+                                        <i class="fas fa-users"></i>
+                                        Accompanying Guests
+                                    </div>
+                                </th>
+                                <th class="px-6 py-4 text-left text-xs font-bold text-white uppercase tracking-wider">
+                                    <div class="flex items-center gap-2">
+                                        <i class="fas fa-user-friends"></i>
+                                        Guest Names
+                                    </div>
+                                </th>
+                                <th class="px-6 py-4 text-left text-xs font-bold text-white uppercase tracking-wider">
+                                    <div class="flex items-center gap-2">
+                                        <i class="fas fa-birthday-cake"></i>
+                                        Guest Details (Age)
+                                    </div>
+                                </th>
+                                <th class="px-6 py-4 text-left text-xs font-bold text-white uppercase tracking-wider">
+                                    <div class="flex items-center gap-2">
+                                        <i class="fas fa-tshirt"></i>
+                                        T-shirt Size
+                                    </div>
+                                </th>
+                                <th class="px-6 py-4 text-left text-xs font-bold text-white uppercase tracking-wider">
+                                    <div class="flex items-center gap-2">
                                         <i class="fas fa-cogs"></i>
                                         Actions
                                     </div>
@@ -136,13 +178,35 @@
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-100">
                             @forelse($orders as $order)
-                            <tr class="hover:bg-blue-50 transition-all duration-300 group">
-                                <td class="px-6 py-4">
+                            @php
+                                $courseLabel = match($order->user->courses_completed) {
+                                    'bsc' => 'BSc',
+                                    'msc' => 'MSc',
+                                    'both' => 'BSc & MSc',
+                                    default => 'N/A',
+                                };
+                                $guestDetails = is_array($order->guest_details) ? $order->guest_details : [];
+                                $guestCount = count($guestDetails);
+                                if ($guestCount === 0 && !is_null($order->accompanying_guests)) {
+                                    $guestCount = (int) $order->accompanying_guests;
+                                }
+                            @endphp
+                            <tr class="hover:bg-blue-50 transition-all duration-300 group align-top">
+                                <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="flex items-center gap-2">
                                         <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center">
                                             <span class="text-xs font-bold text-blue-600">#{{ $order->id }}</span>
                                         </div>
                                     </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="font-medium text-gray-900">{{ $order->session ?? 'N/A' }}</span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-indigo-100 text-indigo-800">
+                                        <i class="fas fa-graduation-cap"></i>
+                                        {{ $courseLabel }}
+                                    </span>
                                 </td>
                                 <td class="px-6 py-4">
                                     <div class="flex items-center gap-3">
@@ -155,7 +219,7 @@
                                         </div>
                                     </div>
                                 </td>
-                                <td class="px-6 py-4">
+                                <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="flex items-center gap-2">
                                         <i class="fas fa-phone text-blue-500 text-sm"></i>
                                         <span class="font-medium text-gray-900">{{ $order->contact_number }}</span>
@@ -163,17 +227,27 @@
                                 </td>
                                 <td class="px-6 py-4">
                                     <div class="flex items-center gap-2">
+                                        <i class="fas fa-envelope text-blue-500 text-sm"></i>
+                                        @if($order->email)
+                                            <a href="mailto:{{ $order->email }}" class="text-sm text-blue-700 hover:underline">{{ $order->email }}</a>
+                                        @else
+                                            <span class="text-gray-400 text-sm">N/A</span>
+                                        @endif
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="flex items-center gap-2">
                                         <i class="fas fa-receipt text-blue-500 text-sm"></i>
                                         <span class="font-mono text-sm bg-gray-100 px-2 py-1 rounded">{{ $order->trxid }}</span>
                                     </div>
                                 </td>
-                                <td class="px-6 py-4">
+                                <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="flex items-center gap-2">
                                         <i class="fas fa-money-bill-wave text-green-500 text-sm"></i>
                                         <span class="font-bold text-green-600 text-lg">৳{{ number_format($order->amount) }}</span>
                                     </div>
                                 </td>
-                                <td class="px-6 py-4">
+                                <td class="px-6 py-4 whitespace-nowrap">
                                     @if($order->status === 'pending')
                                         <span class="inline-flex items-center gap-2 px-3 py-1 text-xs font-bold rounded-full bg-yellow-100 text-yellow-800 border border-yellow-200">
                                             <i class="fas fa-clock"></i>
@@ -186,12 +260,58 @@
                                         </span>
                                     @endif
                                 </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-blue-50 text-blue-700 border border-blue-200">
+                                        <i class="fas fa-users"></i>
+                                        {{ $guestCount }}
+                                    </span>
+                                </td>
                                 <td class="px-6 py-4">
-                                    <div class="flex items-center gap-2">
+                                    @if(count($guestDetails))
+                                        <div class="flex flex-wrap gap-2">
+                                            @foreach($guestDetails as $guest)
+                                                <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-gray-100 text-gray-700">
+                                                    <i class="fas fa-user"></i>
+                                                    {{ $guest['name'] ?? 'N/A' }}
+                                                </span>
+                                            @endforeach
+                                        </div>
+                                    @else
+                                        <span class="text-gray-400 text-sm">No guests</span>
+                                    @endif
+                                </td>
+                                <td class="px-6 py-4">
+                                    @if(count($guestDetails))
+                                        <div class="space-y-1">
+                                            @foreach($guestDetails as $guest)
+                                                <div class="flex items-center gap-2 text-sm text-gray-700">
+                                                    <span class="font-semibold">{{ $guest['name'] ?? 'N/A' }}</span>
+                                                    <span class="text-gray-400">•</span>
+                                                    <span>{{ $guest['age'] ?? 'N/A' }} yrs</span>
+                                                    @if(!empty($guest['relation']))
+                                                        <span class="text-gray-400">•</span>
+                                                        <span>{{ $guest['relation'] }}</span>
+                                                    @endif
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                    @else
+                                        <span class="text-gray-400 text-sm">No guest details</span>
+                                    @endif
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-purple-100 text-purple-700">
+                                        <i class="fas fa-tshirt"></i>
+                                        {{ strtoupper($order->tshirt_size ?? 'N/A') }}
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <div class="flex flex-wrap items-center gap-2">
                                         @if($order->status === 'pending')
                                             <button onclick="confirmMarkAsPaid({{ $order->id }}, '{{ $order->full_name }}', '{{ $order->trxid }}', '{{ number_format($order->amount) }}')" 
                                                     class="inline-flex items-center gap-2 bg-gradient-to-r from-green-600 to-green-700 text-white px-4 py-2 rounded-lg font-bold shadow hover:shadow-lg transition-all duration-300 transform hover:scale-105">
                                                 <i class="fas fa-check"></i>
+                                                Mark Paid
                                             </button>
                                         @else
                                             <span class="inline-flex items-center gap-2 text-green-700 font-semibold">
@@ -204,7 +324,7 @@
                                         <button onclick="confirmDelete({{ $order->id }}, '{{ $order->full_name }}')" 
                                                 class="inline-flex items-center gap-2 bg-gradient-to-r from-red-600 to-red-700 text-white px-4 py-2 rounded-lg font-bold shadow hover:shadow-lg transition-all duration-300 transform hover:scale-105">
                                             <i class="fas fa-trash"></i>
-                                            
+                                            Remove
                                         </button>
                                     </div>
                                 </td>

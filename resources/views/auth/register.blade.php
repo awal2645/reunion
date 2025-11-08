@@ -27,7 +27,7 @@
 
         <!-- Registration Form -->
         <div class="bg-white rounded-3xl shadow-2xl border border-gray-100 overflow-hidden">
-            <form method="POST" action="{{ route('register') }}" enctype="multipart/form-data" class="p-8">
+            <form method="POST" action="{{ route('register') }}" enctype="multipart/form-data" class="p-8" id="registration-form">
         @csrf
 
                 <!-- Basic Information -->
@@ -397,22 +397,47 @@
                             <label class="block text-sm font-semibold text-gray-700 mb-2">
                                 <i class="fas fa-camera text-blue-500 mr-2"></i>Upload a Recent Photo
                             </label>
-                            <div class="mt-2 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-xl hover:border-blue-500 transition-colors duration-200 bg-gray-50">
+                            <div id="upload-container" class="mt-2 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-xl hover:border-blue-500 transition-colors duration-200 bg-gray-50">
                                 <div class="space-y-2 text-center">
                                     <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48">
                                         <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                                     </svg>
                                     <div class="flex text-sm text-gray-600">
                                         <label for="photo" class="relative cursor-pointer bg-white rounded-md font-medium text-blue-600 hover:text-blue-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-blue-500">
-                                            <span>Upload a file</span>
+                                            <span id="upload-text">Upload a file</span>
                                             <input id="photo" name="photo" type="file" accept="image/*" class="sr-only">
                                         </label>
                                         <p class="pl-1">or drag and drop</p>
                                     </div>
                                     <p class="text-xs text-gray-500">PNG, JPG, GIF up to 4MB</p>
+                                    <div id="upload-progress" class="hidden">
+                                        <div class="w-full bg-gray-200 rounded-full h-2">
+                                            <div id="progress-bar" class="bg-blue-600 h-2 rounded-full transition-all duration-300" style="width: 0%"></div>
+                                        </div>
+                                        <p class="text-xs text-blue-600 mt-1">Uploading...</p>
+                                    </div>
                                 </div>
                             </div>
+                            
+                            <!-- Photo Preview Container -->
+                            <div id="photo-preview" class="hidden mt-4 relative mx-auto max-w-xs">
+                                <img id="preview-img" class="mx-auto max-h-48 rounded-xl shadow-lg" />
+                                <button type="button" id="remove-photo" class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-2 shadow-lg hover:bg-red-600 focus:outline-none transition-all duration-300">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                                <div class="mt-2 text-center">
+                                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                        <i class="fas fa-check-circle mr-1"></i>
+                                        Photo uploaded successfully
+                                    </span>
+                                </div>
+                            </div>
+                            
+                            <!-- Hidden input to store photo path -->
+                            <input type="hidden" name="photo_path" id="photo_path" value="{{ old('photo_path') }}">
+                            
                             <x-input-error :messages="$errors->get('photo')" class="mt-2" />
+                            <div id="photo-error" class="hidden text-red-500 text-sm mt-2"></div>
                         </div>
 
                         <!-- Favorite Memory -->
@@ -590,64 +615,24 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Image Preview Handler
+            // AJAX Photo Upload Handler
             const photoInput = document.getElementById('photo');
-            const uploadContainer = photoInput.closest('.border-dashed');
-            
-            // Create and append preview elements
-            const previewContainer = document.createElement('div');
-            previewContainer.className = 'hidden mt-4 relative mx-auto max-w-xs';
-            previewContainer.innerHTML = `
-                <img id="preview-img" class="mx-auto max-h-48 rounded-xl shadow-lg" />
-                <button type="button" id="remove-image" class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-2 shadow-lg hover:bg-red-600 focus:outline-none transition-all duration-300">
-                    <i class="fas fa-times"></i>
-                </button>
-            `;
-            uploadContainer.parentNode.insertBefore(previewContainer, uploadContainer.nextSibling);
-
+            const uploadContainer = document.getElementById('upload-container');
+            const photoPreview = document.getElementById('photo-preview');
             const previewImg = document.getElementById('preview-img');
-            const removeButton = document.getElementById('remove-image');
-            const uploadIcon = uploadContainer.querySelector('svg');
-            const uploadText = uploadContainer.querySelector('label span');
+            const removePhotoBtn = document.getElementById('remove-photo');
+            const uploadProgress = document.getElementById('upload-progress');
+            const progressBar = document.getElementById('progress-bar');
+            const uploadText = document.getElementById('upload-text');
+            const photoPathInput = document.getElementById('photo_path');
+            const photoError = document.getElementById('photo-error');
 
             // Handle file selection
             photoInput.addEventListener('change', function() {
                 const file = this.files[0];
                 if (file) {
-                    // Validate file type
-                    const validTypes = ['image/jpeg', 'image/png', 'image/gif'];
-                    if (!validTypes.includes(file.type)) {
-                        alert('Please select a valid image file (PNG, JPG, or GIF)');
-                        this.value = '';
-                        return;
-                    }
-
-                    // Validate file size (4MB)
-                    if (file.size > 4 * 1024 * 1024) {
-                        alert('Image size should be less than 4MB');
-                        this.value = '';
-                        return;
-                    }
-
-                    // Show preview
-                    const reader = new FileReader();
-                    reader.onload = function(e) {
-                        previewImg.src = e.target.result;
-                        previewContainer.classList.remove('hidden');
-                        uploadContainer.classList.add('opacity-50');
-                        uploadText.textContent = 'Change photo';
-                    };
-                    reader.readAsDataURL(file);
+                    uploadPhoto(file);
                 }
-            });
-
-            // Handle remove button click
-            removeButton.addEventListener('click', function() {
-                photoInput.value = '';
-                previewContainer.classList.add('hidden');
-                uploadContainer.classList.remove('opacity-50');
-                uploadText.textContent = 'Upload a file';
-                previewImg.src = '';
             });
 
             // Handle drag and drop
@@ -668,7 +653,159 @@
                 const file = e.dataTransfer.files[0];
                 if (file) {
                     photoInput.files = e.dataTransfer.files;
-                    photoInput.dispatchEvent(new Event('change'));
+                    uploadPhoto(file);
+                }
+            });
+
+            // Handle remove photo
+            removePhotoBtn.addEventListener('click', function() {
+                photoInput.value = '';
+                photoPathInput.value = '';
+                photoPreview.classList.add('hidden');
+                uploadContainer.classList.remove('opacity-50');
+                uploadText.textContent = 'Upload a file';
+                hideError();
+            });
+
+            // AJAX Photo Upload Function
+            function uploadPhoto(file) {
+                // Validate file type
+                const validTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/gif'];
+                if (!validTypes.includes(file.type)) {
+                    showError('Please select a valid image file (PNG, JPG, or GIF)');
+                    photoInput.value = '';
+                    return;
+                }
+
+                // Validate file size (4MB)
+                if (file.size > 4 * 1024 * 1024) {
+                    showError('Image size should be less than 4MB');
+                    photoInput.value = '';
+                    return;
+                }
+
+                // Show progress
+                uploadProgress.classList.remove('hidden');
+                hideError();
+
+                // Create FormData
+                const formData = new FormData();
+                formData.append('photo', file);
+                formData.append('_token', '{{ csrf_token() }}');
+
+                // AJAX Upload
+                const xhr = new XMLHttpRequest();
+                
+                // Progress handler
+                xhr.upload.addEventListener('progress', function(e) {
+                    if (e.lengthComputable) {
+                        const percentComplete = (e.loaded / e.total) * 100;
+                        progressBar.style.width = percentComplete + '%';
+                    }
+                });
+
+                // Success/Error handler
+                xhr.addEventListener('load', function() {
+                    uploadProgress.classList.add('hidden');
+                    progressBar.style.width = '0%';
+
+                    if (xhr.status === 200) {
+                        const response = JSON.parse(xhr.responseText);
+                        if (response.success) {
+                            // Show preview
+                            previewImg.src = response.photo_url;
+                            photoPathInput.value = response.photo_path;
+                            photoPreview.classList.remove('hidden');
+                            uploadContainer.classList.add('opacity-50');
+                            uploadText.textContent = 'Change photo';
+                            
+                            // Show success message
+                            if (typeof Swal !== 'undefined') {
+                                Swal.fire({
+                                    toast: true,
+                                    position: 'top-end',
+                                    icon: 'success',
+                                    title: response.message,
+                                    showConfirmButton: false,
+                                    timer: 3000,
+                                    timerProgressBar: true
+                                });
+                            }
+                        } else {
+                            showError(response.message);
+                            photoInput.value = '';
+                        }
+                    } else {
+                        const response = JSON.parse(xhr.responseText);
+                        showError(response.message || 'Upload failed. Please try again.');
+                        photoInput.value = '';
+                    }
+                });
+
+                // Error handler
+                xhr.addEventListener('error', function() {
+                    uploadProgress.classList.add('hidden');
+                    progressBar.style.width = '0%';
+                    showError('Upload failed. Please check your connection and try again.');
+                    photoInput.value = '';
+                });
+
+                // Send request
+                xhr.open('POST', '{{ route("upload.photo") }}');
+                xhr.send(formData);
+            }
+
+            // Show error message
+            function showError(message) {
+                photoError.textContent = message;
+                photoError.classList.remove('hidden');
+            }
+
+            // Hide error message
+            function hideError() {
+                photoError.classList.add('hidden');
+            }
+
+            // Check if photo path exists on page load (for form validation errors)
+            if (photoPathInput.value) {
+                // Simulate uploaded state
+                uploadText.textContent = 'Change photo';
+                uploadContainer.classList.add('opacity-50');
+                
+                // You might want to show a placeholder or fetch the image URL
+                // For now, just show that an image was previously uploaded
+                const statusDiv = document.createElement('div');
+                statusDiv.className = 'mt-2 text-center';
+                statusDiv.innerHTML = `
+                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                        <i class="fas fa-image mr-1"></i>
+                        Photo previously uploaded
+                    </span>
+                `;
+                uploadContainer.parentNode.insertBefore(statusDiv, uploadContainer.nextSibling);
+            }
+
+            // Form submission validation
+            const registrationForm = document.getElementById('registration-form');
+            registrationForm.addEventListener('submit', function(e) {
+                const photoPath = photoPathInput.value;
+                if (!photoPath) {
+                    e.preventDefault();
+                    showError('Please upload a photo before submitting the form.');
+                    
+                    // Scroll to photo upload section
+                    uploadContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    
+                    // Show error with SweetAlert if available
+                    if (typeof Swal !== 'undefined') {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Photo Required',
+                            text: 'Please upload a photo before submitting the registration form.',
+                            confirmButtonColor: '#3B82F6'
+                        });
+                    }
+                    return false;
                 }
             });
         });
