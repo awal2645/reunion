@@ -210,13 +210,34 @@
                                 </td>
                                 <td class="px-6 py-4">
                                     <div class="flex items-center gap-3">
-                                        <div class="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-white text-sm font-bold">
-                                            {{ substr($order->full_name, 0, 1) }}
-                                        </div>
-                                        <div>
+                                        @if($order->photo_path)
+                                            <div class="relative group">
+                                                <img src="{{ asset('storage/' . $order->photo_path) }}" 
+                                                     alt="{{ $order->full_name }}" 
+                                                     class="w-10 h-10 rounded-full object-cover border-2 border-blue-500">
+                                                <a href="{{ route('admin.users.downloadImage', $order->user_id) }}" 
+                                                   class="absolute -bottom-1 -right-1 bg-blue-600 text-white rounded-full p-1.5 shadow-lg hover:bg-blue-700 transition-all duration-300 opacity-0 group-hover:opacity-100"
+                                                   title="Download Image">
+                                                    <i class="fas fa-download text-xs"></i>
+                                                </a>
+                                            </div>
+                                        @else
+                                            <div class="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-white text-sm font-bold">
+                                                {{ substr($order->full_name, 0, 1) }}
+                                            </div>
+                                        @endif
+                                        <div class="flex-1">
                                             <div class="font-semibold text-gray-900">{{ $order->full_name }}</div>
                                             <div class="text-xs text-gray-500">{{ $order->created_at->format('M j, Y') }}</div>
                                         </div>
+                                        @if($order->photo_path)
+                                            <a href="{{ route('admin.users.downloadImage', $order->user_id) }}" 
+                                               class="inline-flex items-center gap-1 bg-blue-600 text-white px-3 py-1.5 rounded-lg text-xs font-semibold hover:bg-blue-700 transition-all duration-300 shadow hover:shadow-md"
+                                               title="Download User Image">
+                                                <i class="fas fa-download"></i>
+                                                <span>Image</span>
+                                            </a>
+                                        @endif
                                     </div>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">

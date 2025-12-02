@@ -56,6 +56,7 @@ Route::middleware(['auth'])->group(function () {
         Route::delete('/admin/orders/{order}', [\App\Http\Controllers\AdminOrderController::class, 'delete'])->name('admin.orders.delete');
         Route::get('/admin/dashboard', [\App\Http\Controllers\AdminDashboardController::class, 'index'])->name('admin.dashboard');
         Route::get('/admin/orders/export', [\App\Http\Controllers\AdminOrderController::class, 'export'])->name('admin.orders.export');
+        Route::get('/admin/users/{user}/download-image', [\App\Http\Controllers\AdminOrderController::class, 'downloadUserImage'])->name('admin.users.downloadImage');
         
         // Admin User Management Routes
         Route::get('/admin/users', [\App\Http\Controllers\Admin\UserController::class, 'index'])->name('admin.users');

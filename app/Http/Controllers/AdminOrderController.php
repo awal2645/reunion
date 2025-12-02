@@ -8,6 +8,8 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use App\Exports\OrdersExport;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Storage;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class AdminOrderController extends Controller
 {
@@ -24,13 +26,15 @@ class AdminOrderController extends Controller
         $query->join('users', 'orders.user_id', '=', 'users.id')
             ->select(
                 'orders.*',
+                'orders.user_id',
                 'users.full_name',
                 'users.contact_number',
                 'users.email',
                 'users.session',
                 'users.courses_completed',
                 'users.accompanying_guests',
-                'users.tshirt_size'
+                'users.tshirt_size',
+                'users.photo_path'
             );
 
         // Filtering
@@ -82,5 +86,29 @@ class AdminOrderController extends Controller
         }
         $filters = $request->only(['status', 'phone', 'email', 'trxid']);
         return Excel::download(new OrdersExport($filters), 'orders.xlsx');
+    }
+
+    public function downloadUserImage($user)
+    {
+        if (!Auth::user() || Auth::user()->role !== 'admin') {
+            abort(403, 'Unauthorized');
+        }
+
+        $user = User::findOrFail($user);
+        
+        if (!$user->photo_path) {
+            abort(404, 'User photo not found');
+        }
+
+        $filePath = storage_path('app/public/' . $user->photo_path);
+        
+        if (!file_exists($filePath)) {
+            abort(404, 'Photo file not found');
+        }
+
+        $fileName = $user->full_name . '_photo.' . pathinfo($filePath, PATHINFO_EXTENSION);
+        $fileName = preg_replace('/[^a-zA-Z0-9._-]/', '_', $fileName);
+
+        return response()->download($filePath, $fileName);
     }
 }
